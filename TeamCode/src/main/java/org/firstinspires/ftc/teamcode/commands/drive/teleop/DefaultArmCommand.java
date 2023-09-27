@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.commands.drive.teleop;
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 
-import org.firstinspires.ftc.teamcode.subsystems.Pivot;
+import org.firstinspires.ftc.teamcode.subsystems.old.Pivot;
 
 public class DefaultArmCommand extends CommandBase {
     private Pivot pivot;

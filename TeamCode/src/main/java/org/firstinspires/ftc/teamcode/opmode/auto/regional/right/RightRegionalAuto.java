@@ -3,42 +3,30 @@ package org.firstinspires.ftc.teamcode.opmode.auto.regional.right;
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.commands.arm.backside.auto.cone.ArmCone2BackCommand;
-import org.firstinspires.ftc.teamcode.commands.arm.backside.auto.cone.ArmCone3BackCommand;
-import org.firstinspires.ftc.teamcode.commands.drive.trajectory.sequence.DisplacementCommand;
 import org.firstinspires.ftc.teamcode.commands.drive.trajectory.sequence.TrajectorySequenceContainerFollowCommand;
-import org.firstinspires.ftc.teamcode.commands.arm.intake.AutoPickConeCommand;
-import org.firstinspires.ftc.teamcode.commands.arm.backside.auto.cone.ArmCone4BackCommand;
-import org.firstinspires.ftc.teamcode.commands.arm.backside.auto.cone.ArmCone5BackCommand;
-import org.firstinspires.ftc.teamcode.commands.arm.outtake.AutoDropConeCommand;
 import org.firstinspires.ftc.teamcode.commands.arm.slide.SlideResetUpAutonCommand;
-import org.firstinspires.ftc.teamcode.commands.arm.frontside.ArmHighFrontCommand;
-import org.firstinspires.ftc.teamcode.commands.arm.frontside.ArmMidFrontCommand;
-import org.firstinspires.ftc.teamcode.opmode.auto.regional.left.LeftRegionalAuto;
-import org.firstinspires.ftc.teamcode.subsystems.Pivot;
-import org.firstinspires.ftc.teamcode.subsystems.Claw;
-import org.firstinspires.ftc.teamcode.subsystems.Slide;
-import org.firstinspires.ftc.teamcode.subsystems.TurnServo;
 import org.firstinspires.ftc.teamcode.subsystems.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drivetrain;
-import org.firstinspires.ftc.teamcode.trajectorysequence.container.SplineToSplineHeading;
-import org.firstinspires.ftc.teamcode.trajectorysequence.container.StrafeLeft;
-import org.firstinspires.ftc.teamcode.trajectorysequence.container.StrafeRight;
-import org.firstinspires.ftc.teamcode.trajectorysequence.container.Turn;
-import org.firstinspires.ftc.teamcode.util.MatchOpMode;
-import org.firstinspires.ftc.teamcode.subsystems.drive.MecanumDrive;
-import org.firstinspires.ftc.teamcode.subsystems.misc.TagVision;
-import org.firstinspires.ftc.teamcode.trajectorysequence.container.Back;
-import org.firstinspires.ftc.teamcode.trajectorysequence.container.Forward;
-import org.firstinspires.ftc.teamcode.trajectorysequence.container.Pose2dContainer;
-import org.firstinspires.ftc.teamcode.trajectorysequence.container.SetReversed;
-import org.firstinspires.ftc.teamcode.trajectorysequence.container.SplineTo;
-import org.firstinspires.ftc.teamcode.trajectorysequence.container.TrajectorySequenceConstraints;
-import org.firstinspires.ftc.teamcode.trajectorysequence.container.TrajectorySequenceContainer;
+import org.firstinspires.ftc.teamcode.subsystems.drive.SixWheel;
+import org.firstinspires.ftc.teamcode.subsystems.old.Pivot;
+import org.firstinspires.ftc.teamcode.subsystems.old.Claw;
+import org.firstinspires.ftc.teamcode.subsystems.old.Slide;
+import org.firstinspires.ftc.teamcode.subsystems.old.TurnServo;
+import org.firstinspires.ftc.teamcode.subsystems.vision.aprilTag.AprilTagVision;
 import org.firstinspires.ftc.teamcode.util.PoseStorage;
+import org.firstinspires.ftc.teamcode.util.teleop.MatchOpMode;
+import org.firstinspires.ftc.teamcode.util.trajectorysequence.container.Back;
+import org.firstinspires.ftc.teamcode.util.trajectorysequence.container.Forward;
+import org.firstinspires.ftc.teamcode.util.trajectorysequence.container.Pose2dContainer;
+import org.firstinspires.ftc.teamcode.util.trajectorysequence.container.SetReversed;
+import org.firstinspires.ftc.teamcode.util.trajectorysequence.container.SplineTo;
+import org.firstinspires.ftc.teamcode.util.trajectorysequence.container.StrafeLeft;
+import org.firstinspires.ftc.teamcode.util.trajectorysequence.container.StrafeRight;
+import org.firstinspires.ftc.teamcode.util.trajectorysequence.container.TrajectorySequenceConstraints;
+import org.firstinspires.ftc.teamcode.util.trajectorysequence.container.TrajectorySequenceContainer;
+import org.firstinspires.ftc.teamcode.util.trajectorysequence.container.Turn;
 //438247 - Justin's Password bn
 
 @Autonomous
@@ -48,7 +36,7 @@ public class RightRegionalAuto extends MatchOpMode {
     private Claw claw;
     private Drivetrain drivetrain;
     private Slide slide;
-    private TagVision tagVision;
+    private AprilTagVision aprilTagVision;
     private TurnServo turnServo;
     @Config
     public static class RightRegionalAutoConstants {
@@ -240,14 +228,14 @@ public class RightRegionalAuto extends MatchOpMode {
     public void robotInit() {
         claw = new Claw(telemetry, hardwareMap);
         pivot = new Pivot(telemetry, hardwareMap);
-        drivetrain = new Drivetrain(new MecanumDrive(hardwareMap, telemetry, false), telemetry, hardwareMap);
+        drivetrain = new Drivetrain(new SixWheel(hardwareMap), telemetry);
         drivetrain.init();
         slide = new Slide( telemetry, hardwareMap);
         turnServo = new TurnServo(telemetry, hardwareMap);
-        tagVision = new TagVision(hardwareMap, telemetry);
+        aprilTagVision = new AprilTagVision(hardwareMap, telemetry);
         while (!isStarted() && !isStopRequested()) {
-            tagVision.updateTagOfInterest();
-            tagVision.tagToTelemetry();
+            aprilTagVision.updateTagOfInterest();
+            aprilTagVision.tagToTelemetry();
             telemetry.update();
         }
         this.matchStart();
@@ -255,7 +243,7 @@ public class RightRegionalAuto extends MatchOpMode {
 
     public void matchStart() {
         double finalX = 0;
-        switch (tagVision.getTag()) {
+        switch (aprilTagVision.getTag()) {
             case 1:
 //                finalX = RightRegionalAutoConstants.Path.Park.leftX;
                 RightRegionalAutoConstants.Path.Park.autoPosition = RightRegionalAutoConstants.Path.Park.AutoPosition.lEFT;
@@ -275,90 +263,14 @@ public class RightRegionalAuto extends MatchOpMode {
                 new SequentialCommandGroup(
                         /* Preload */
                         new ParallelCommandGroup(
-                                new TrajectorySequenceContainerFollowCommand(drivetrain, RightRegionalAutoConstants.Path.PreLoad.preload),
-                                new ArmHighFrontCommand(slide, pivot, claw, turnServo, true)
+                                new TrajectorySequenceContainerFollowCommand(drivetrain, RightRegionalAutoConstants.Path.PreLoad.preload)
                         ),
-                        new WaitCommand(100),
-                        new AutoDropConeCommand(claw, slide, pivot, true),
-
-
-
-                        /* Cycle 1 Pickup */
-                        new ParallelCommandGroup(
-                                new ArmCone5BackCommand(slide, claw, pivot, turnServo),
-                                new TrajectorySequenceContainerFollowCommand(drivetrain, RightRegionalAutoConstants.Path.Cycle1Pickup.cycle1Pickup,
-                                        new DisplacementCommand(30, new AutoPickConeCommand(slide, claw)))
-                        ),
-//                        new ParallelCommandGroup(
-//                                new InstantCommand(claw::clawClose),
-//                                new DriveForwardCommand(drivetrain, 0.1)
-//                        ),
-//                        new AutoPickConeCommand(slide, claw),
-
-
-
-                        /* Cycle 1 Drop */
-                        new ParallelCommandGroup(
-                                new ArmMidFrontCommand(slide, pivot, claw, turnServo,true),
-                                new TrajectorySequenceContainerFollowCommand(drivetrain, RightRegionalAutoConstants.Path.Cycle1Drop.cycle1Drop)
-                        ),
-                        new AutoDropConeCommand(claw, slide, pivot, true),
-
-                        /* Cycle 2 Pickup */
-                        new ParallelCommandGroup(
-                                new ArmCone4BackCommand(slide, claw, pivot, turnServo),
-                                new TrajectorySequenceContainerFollowCommand(drivetrain, RightRegionalAutoConstants.Path.Cycle2Pickup.cycle2Pickup,
-                                        new DisplacementCommand(28.7, new AutoPickConeCommand(slide, claw)))
-                        ),
-//                        new AutoPickConeCommand(slide, claw),
-
-                        /* Cycle 2 Drop */
-                        new ParallelCommandGroup(
-                                new ArmMidFrontCommand(slide, pivot, claw, turnServo,true),
-                                new TrajectorySequenceContainerFollowCommand(drivetrain, RightRegionalAutoConstants.Path.Cycle2Drop.cycle2Drop)
-                        ),
-                        new AutoDropConeCommand(claw, slide, pivot, true),
-
-                        /* Cycle 3 Pickup */
-                        new ParallelCommandGroup(
-                                new ArmCone3BackCommand(slide, claw, pivot, turnServo),
-                                new TrajectorySequenceContainerFollowCommand(drivetrain, RightRegionalAutoConstants.Path.Cycle3Pickup.cycle3Pickup,
-                                        new DisplacementCommand(29.52, new AutoPickConeCommand(slide, claw)))
-                        ),
-//                                        new AutoPickConeCommand(slide, claw),
-
-                        /* Cycle 3 Drop */
-                        new ParallelCommandGroup(
-                                new ArmMidFrontCommand(slide, pivot, claw, turnServo,true),
-                                new TrajectorySequenceContainerFollowCommand(drivetrain, RightRegionalAutoConstants.Path.Cycle3Drop.cycle3Drop)
-                        ),
-                        new AutoDropConeCommand(claw, slide, pivot, true),
-
-
-//                        /* Cycle 4 Pickup */
-//                        new ParallelCommandGroup(
-//                                new ArmCone2BackCommand(slide, claw, pivot, turnServo),
-//                                new TrajectorySequenceContainerFollowCommand(drivetrain, RightRegionalAutoConstants.Path.Cycle4Pickup.cycle4Pickup,
-//                                        new DisplacementCommand(27, new AutoPickConeCommand(slide, claw)))
-//                        ),
-////                        new AutoPickConeCommand(slide, claw),
-//
-//                        /* Cycle 4 Drop */
-//                        new ParallelCommandGroup(
-//                                new ArmHighFrontCommand(slide, pivot, claw, turnServo,true),
-////                                new ArmMidFrontCommand(slide, pivot, claw, turnServo,true),
-//                                new TrajectorySequenceContainerFollowCommand(drivetrain, RightRegionalAutoConstants.Path.Cycle4Drop.cycle4Drop)
-//                        ),
-//                        new AutoDropConeCommand(claw, slide, pivot, true),
-
                         /* Park */
                         new SequentialCommandGroup(//Y is this not working...
                                 new TrajectorySequenceContainerFollowCommand(drivetrain, RightRegionalAutoConstants.Path.Park.getPark(finalX))
                         ),
                         new SequentialCommandGroup(
                                 new SlideResetUpAutonCommand(slide, pivot, claw, turnServo)
-//                                new WaitCommand(1000),
-//                                run(pivot::stopArm)
                         ),
                         run(() -> PoseStorage.currentPose = drivetrain.getPoseEstimate()),
 

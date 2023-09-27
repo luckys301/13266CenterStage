@@ -5,10 +5,10 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
-import org.firstinspires.ftc.teamcode.subsystems.Pivot;
-import org.firstinspires.ftc.teamcode.subsystems.Claw;
-import org.firstinspires.ftc.teamcode.subsystems.Slide;
-import org.firstinspires.ftc.teamcode.subsystems.TurnServo;
+import org.firstinspires.ftc.teamcode.subsystems.old.Pivot;
+import org.firstinspires.ftc.teamcode.subsystems.old.Claw;
+import org.firstinspires.ftc.teamcode.subsystems.old.Slide;
+import org.firstinspires.ftc.teamcode.subsystems.old.TurnServo;
 
 public class ArmHighBackCommand extends SequentialCommandGroup {
     public ArmHighBackCommand(Slide slide, Pivot pivot, Claw claw, TurnServo turnServo, boolean auto){

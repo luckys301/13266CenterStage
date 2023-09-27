@@ -4,9 +4,9 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
-import org.firstinspires.ftc.teamcode.subsystems.Pivot;
-import org.firstinspires.ftc.teamcode.subsystems.Claw;
-import org.firstinspires.ftc.teamcode.subsystems.Slide;
+import org.firstinspires.ftc.teamcode.subsystems.old.Pivot;
+import org.firstinspires.ftc.teamcode.subsystems.old.Claw;
+import org.firstinspires.ftc.teamcode.subsystems.old.Slide;
 
 public class AutoDropConeCommand extends SequentialCommandGroup {
 

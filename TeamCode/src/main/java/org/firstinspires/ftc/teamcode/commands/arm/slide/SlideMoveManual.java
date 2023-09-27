@@ -2,8 +2,7 @@ package org.firstinspires.ftc.teamcode.commands.arm.slide;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.subsystems.Slide;
+import org.firstinspires.ftc.teamcode.subsystems.old.Slide;
 
 import java.util.function.Supplier;
 

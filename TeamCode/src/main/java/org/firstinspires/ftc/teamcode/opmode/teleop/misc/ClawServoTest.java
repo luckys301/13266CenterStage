@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop.misc;
 
-import static org.firstinspires.ftc.teamcode.subsystems.Claw.*;
-import static org.firstinspires.ftc.teamcode.subsystems.TurnServo.F_POS_S3;
+import static org.firstinspires.ftc.teamcode.subsystems.old.Claw.*;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
