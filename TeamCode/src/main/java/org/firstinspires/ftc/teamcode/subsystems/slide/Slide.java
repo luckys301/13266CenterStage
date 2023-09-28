@@ -13,9 +13,11 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.NebulaConstants;
 import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaMotor;
+import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaMotorGroup;
 
 @Config
 public class Slide extends SubsystemBase {
+    public final NebulaMotorGroup motorGroup;
     protected Telemetry telemetry;
     protected NebulaMotor slideM1, slideM2;
     protected PIDFController slideController;
@@ -23,18 +25,10 @@ public class Slide extends SubsystemBase {
     protected double output = 0;
     protected boolean dropBoolean = false;
 
-    public static SlideValue REST = make(SlideEnum.REST,1, true);
-    public static SlideValue GROUND = make(SlideEnum.GROUND,5,false);
-    public static SlideValue LOW = make(SlideEnum.LOW,1, true);
+    public static SlideValue REST = make(SlideEnum.TRANSFER, true);
+    public static SlideValue LOW = make(SlideEnum.LOW, true);
     public static SlideValue MID = make(SlideEnum.MID,5,false);
     public static SlideValue HIGH = make(SlideEnum.HIGH,5,false);
-    public static SlideValue AUTO_MID = make(SlideEnum.AUTO_MID,1, true);
-    public static SlideValue AUTO_HIGH = make(SlideEnum.AUTO_HIGH,1, true);
-    public static SlideValue FIVE = make(SlideEnum.FIVE,5,false);
-    public static SlideValue FOUR = make(SlideEnum.FOUR,5,false);
-    public static SlideValue THREE = make(SlideEnum.THREE,1, true);
-    public static SlideValue TWO = make(SlideEnum.TWO,5,false);
-    public static SlideValue ONE = make(SlideEnum.ONE,1, true);
 
 
 
@@ -54,6 +48,7 @@ public class Slide extends SubsystemBase {
             NebulaConstants.Slide.slideIdleMode,
             isEnabled);
 
+        motorGroup = new NebulaMotorGroup(slideM1, slideM2);
         slideM1.setDistancePerPulse(NebulaConstants.Slide.slideDistancePerPulse);
         slideM2.setDistancePerPulse(NebulaConstants.Slide.slideDistancePerPulse);
 
@@ -67,7 +62,7 @@ public class Slide extends SubsystemBase {
 
         this.telemetry = tl;
         slideAutomatic = false;
-        slidePos = SlideEnum.REST;
+        slidePos = SlideEnum.TRANSFER;
     }
 
     @Override
@@ -117,7 +112,7 @@ public class Slide extends SubsystemBase {
     public void slideResting() {
         slideAutomatic = true;
         slideController.setSetPoint(REST.slidePosition);
-        slidePos = SlideEnum.REST;
+        slidePos = SlideEnum.TRANSFER;
     }
 
     public void resetEncoder() {
@@ -140,12 +135,12 @@ public class Slide extends SubsystemBase {
             case HIGH:
                 slideController.setSetPoint(HIGH.slidePosition-740);
                 break;
-            case AUTO_MID:
-                slideController.setSetPoint(AUTO_MID.slidePosition-290);
-                break;
-            case AUTO_HIGH:
-                slideController.setSetPoint(AUTO_HIGH.slidePosition-650);
-                break;
+//            case AUTO_MID:
+//                slideController.setSetPoint(AUTO_MID.slidePosition-290);
+//                break;
+//            case AUTO_HIGH:
+//                slideController.setSetPoint(AUTO_HIGH.slidePosition-650);
+//                break;
         }
     }
 

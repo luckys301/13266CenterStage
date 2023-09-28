@@ -4,6 +4,8 @@ import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.commands.arm.arm.PivotMoveManual;
+import org.firstinspires.ftc.teamcode.commands.arm.slide.SlideMoveManual;
 import org.firstinspires.ftc.teamcode.commands.drive.teleop.DefaultTankDriveCommand;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.drive.SixWheel;
@@ -23,6 +25,7 @@ public class TeleOpMain extends MatchOpMode {
 
 
     // Subsystems
+    //Most of these old subsystems
     private Pivot pivot;
     private Claw claw;
     private Drivetrain drivetrain;
@@ -70,9 +73,9 @@ public class TeleOpMain extends MatchOpMode {
 //         * OPERATOR
 //         */
 //
-//        slide.setDefaultCommand(new SlideMoveManual(slide, operatorGamepad::getRightY));
+        slide.setDefaultCommand(new SlideMoveManual(slide, operatorGamepad::getRightY));
 //
-//        pivot.setDefaultCommand(new PivotMoveManual(pivot, operatorGamepad::getLeftY));
+        pivot.setDefaultCommand(new PivotMoveManual(pivot, operatorGamepad::getLeftY));
 //
 //        Button armIntake = (new GamepadTrigger(operatorGamepad, GamepadKeys.Trigger.LEFT_TRIGGER))
 //                .whenPressed(new PickConeCommand(claw));
@@ -97,10 +100,8 @@ public class TeleOpMain extends MatchOpMode {
 //
 //        Button pivotInitializationPosition = (new GamepadButton(operatorGamepad, GamepadKeys.Button.A)
 //                .whenPressed(pivot::encoderReset));
-//
 //        Button slideRecenter = (new GamepadButton(operatorGamepad, GamepadKeys.Button.B))
 //                .whenPressed(slide::encoderRecenter);
-
 //        Button pivotRecenter = (new GamepadButton(operatorGamepad, GamepadKeys.Button.START))
 //                .whenPressed(pivot::encoderReset);
     }

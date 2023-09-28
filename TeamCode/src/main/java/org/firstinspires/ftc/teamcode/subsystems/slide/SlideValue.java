@@ -2,18 +2,12 @@ package org.firstinspires.ftc.teamcode.subsystems.slide;
 
 public class SlideValue {
     public enum SlideEnum {
-        REST(0.0),
-        GROUND(0.0),
+        TRANSFER(0.0),
+
         LOW(0.0),
         MID(0.0),
         HIGH(0.0),
-        AUTO_MID(0.0),
-        AUTO_HIGH(0.0),
-        FIVE(0.0),
-        FOUR(0.0),
-        THREE(0.0),
-        TWO(0.0),
-        ONE(0.0),
+
         MANUAL(0.0);
         public double value;
         SlideEnum(double value) {
@@ -31,6 +25,9 @@ public class SlideValue {
     }
     protected static SlideValue make(SlideEnum slideEnum, double pivotPosition, boolean shouldSlideDrop) {
         return new SlideValue(slideEnum, pivotPosition, shouldSlideDrop);
+    }
+    protected static SlideValue make(SlideEnum slideEnum, boolean shouldSlideDrop) {
+        return new SlideValue(slideEnum, slideEnum.value, shouldSlideDrop);
     }
 
 //    protected double getSlidePosition(){

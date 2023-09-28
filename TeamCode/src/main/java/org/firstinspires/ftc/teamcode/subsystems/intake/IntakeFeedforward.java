@@ -39,6 +39,5 @@ public class IntakeFeedforward extends Intake {
         motorGroup.setPower(output);
         telemetry.addData("Intake RPM:", getShooterRPM());
         telemetry.addData("Intake Required RPM:", controller.getSetPoint());
-
     }
 }
