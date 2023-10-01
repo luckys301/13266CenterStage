@@ -1,13 +1,12 @@
 package org.firstinspires.ftc.teamcode.subsystems.old;
 
-import android.graphics.Color;
-
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+@Deprecated
 
 public class SensorColor extends SubsystemBase implements HardwareDevice {
 

@@ -36,7 +36,7 @@ public class IntakeFeedforward extends Intake {
         start = trapezoidProfile.calculate(0.02);
         double output = (controller.calculate(getShooterRPM()) +
             (intakeFeedforward.calculate(start.position, start.velocity)));
-        motorGroup.setPower(output);
+        motor.setPower(output);
         telemetry.addData("Intake RPM:", getShooterRPM());
         telemetry.addData("Intake Required RPM:", controller.getSetPoint());
     }

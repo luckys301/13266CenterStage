@@ -8,7 +8,7 @@ import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
+@Deprecated
 @Config
 public class Claw extends SubsystemBase {
     //Claw Variables

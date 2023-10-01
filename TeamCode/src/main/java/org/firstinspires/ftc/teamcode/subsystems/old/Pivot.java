@@ -14,6 +14,8 @@ import org.firstinspires.ftc.teamcode.util.misc.Util;
 
 import java.util.logging.Level;
 
+@Deprecated
+
 @Config
 public class Pivot extends SubsystemBase {
 

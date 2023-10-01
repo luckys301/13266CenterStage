@@ -36,15 +36,15 @@ public class Slide extends SubsystemBase {
 
     public Slide(Telemetry tl, HardwareMap hw, boolean isEnabled) {
         slideM1 = new NebulaMotor(hw,
-            NebulaConstants.Slide.slideMName1,
+            NebulaConstants.Slide.slideRName,
             NebulaConstants.Slide.slideType,
-            NebulaConstants.Slide.slideDirection1,
+            NebulaConstants.Slide.slideRDirection,
             NebulaConstants.Slide.slideIdleMode,
             isEnabled);
         slideM2 = new NebulaMotor(hw,
-            NebulaConstants.Slide.slideMName2,
+            NebulaConstants.Slide.slideLName,
             NebulaConstants.Slide.slideType,
-            NebulaConstants.Slide.slideDirection2,
+            NebulaConstants.Slide.slideLDirection,
             NebulaConstants.Slide.slideIdleMode,
             isEnabled);
 
@@ -84,10 +84,9 @@ public class Slide extends SubsystemBase {
 //                slideM2.set(output * POWER);
 //            }
         }
-        telemetry.addLine("Slide - ");
-        telemetry.addData("     Slide Motor Output:", output);
-        telemetry.addData("     Slide1 Encoder: ", slideM1.getPosition());
-        telemetry.addData("     Slide Pos:", getSetPoint());
+        telemetry.addData("Slide Motor Output:", output);
+        telemetry.addData("Slide1 Encoder: ", slideM1.getPosition());
+        telemetry.addData("Slide Pos:", getSetPoint());
     }
 
     public double getEncoderDistance() {
@@ -145,7 +144,7 @@ public class Slide extends SubsystemBase {
     }
 
     public void setSetPoint(double setPoint, boolean lowBool) {
-        if(NebulaConstants.Gamepad.overrideSafety){
+        if(NebulaConstants.GamePad.overrideSafety){
             if(setPoint>NebulaConstants.Slide.MAX_POSITION ||
                 setPoint<NebulaConstants.Slide.MIN_POSITION){
                 slideM1.stop();

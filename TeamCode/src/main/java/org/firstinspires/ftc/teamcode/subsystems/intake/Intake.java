@@ -11,12 +11,11 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.NebulaConstants;
 import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaMotor;
-import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaMotorGroup;
+import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaServo;
 
 @Config
 public class Intake extends SubsystemBase {
     public final PIDFController controller;
-    public final NebulaMotorGroup motorGroup;
 
     public enum IntakeRPM {
         OUTTAKE(100),
@@ -24,29 +23,50 @@ public class Intake extends SubsystemBase {
         STOP(0);
 
         public final double speed;
-        public final boolean reset;
+        public final boolean down;
         IntakeRPM(double speed) {
             this.speed = speed;
-            this.reset = false;
+            this.down = false;
         }
-        IntakeRPM(double speed, boolean reset) {
+        IntakeRPM(double speed, boolean down) {
             this.speed = speed;
-            this.reset = reset;
+            this.down = down;
         }
     }
+
+    public enum IntakePos {
+        UP(0,0),
+        DOWN(0,0);
+
+        public final double rPos, lPos;
+        IntakePos(double rPos, double lPos) {
+            this.rPos = rPos;
+            this.lPos = lPos;
+        }
+    }
+
     IntakeRPM shooterRPM = IntakeRPM.STOP;
     Telemetry telemetry;
-    public final NebulaMotor motor, motor2;
+    public final NebulaMotor motor;
+    private final NebulaServo intakeServoR,intakeServoL;
+
 
     public Intake(Telemetry tl, HardwareMap hw, Boolean isEnabled) {
         motor = new NebulaMotor(hw, NebulaConstants.Intake.intakeMName,
             NebulaConstants.Intake.intakeType, NebulaConstants.Intake.intakeDirection,
             NebulaMotor.IdleMode.Coast, isEnabled);
-        motor2 = new NebulaMotor(hw, NebulaConstants.Intake.intakeM2Name,
-            NebulaConstants.Intake.intakeType, NebulaConstants.Intake.intake2Direction,
-            NebulaMotor.IdleMode.Coast, isEnabled);
-        motorGroup = new NebulaMotorGroup(motor, motor2);
-//        motor.setDistancePerPulse(1);
+        intakeServoR = new NebulaServo(hw,
+                NebulaConstants.Intake.intakeRName,
+                NebulaConstants.Intake.intakeRDirection,
+                NebulaConstants.Intake.minAngle,
+                NebulaConstants.Intake.maxAngle,
+                isEnabled);
+        intakeServoL = new NebulaServo(hw,
+                NebulaConstants.Intake.intakeLName,
+                NebulaConstants.Intake.intakeLDirection,
+                NebulaConstants.Intake.minAngle,
+                NebulaConstants.Intake.maxAngle,
+                isEnabled);
         controller = new PIDFController(
             NebulaConstants.Intake.intakePID.p,
             NebulaConstants.Intake.intakePID.i,
@@ -64,12 +84,12 @@ public class Intake extends SubsystemBase {
         telemetry.addData("Intake RPM:", getShooterRPM());
         telemetry.addData("Intake Required RPM:", controller.getSetPoint());
 
-        motorGroup.setPower(output);
+        motor.setPower(output);
     }
 
 
     public double getShooterRPM() {
-        return motorGroup.getCorrectedVelocity();//TODO:Fix RPM Math
+        return motor.getCorrectedVelocity();//TODO:Fix RPM Math
 //        return 60 * ((double) motorGroup.getCorrectedVelocity() /
 //            (double) Constants.SHOOTER_TPR);
     }
@@ -78,48 +98,55 @@ public class Intake extends SubsystemBase {
     //    ang_velocity_right = rpm_right * rpm_to_radians;
     //    ang_velocity_right_deg = ang_velocity_right * rad_to_deg;
 
-//    public void setSetPoint(IntakeRPM speed) {
-////        if(pos.pivotPosition>NebulaConstants.Pivot.MAX_POSITION ||
-////            pos.pivotPosition<NebulaConstants.Pivot.MIN_POSITION){
-////            motor.stopMotor();
-////            return;
-////        }
-//        controller.setSetPoint(speed.speed);
-//        shooterRPM = speed;
-//        if(speed.reset){
-//            NebulaConstants.Intake.intakeTime.reset();
-//        }
-//    }
-    public void setSetPoint(double setPoint, boolean reset) {
+
+    public void setSetPoint(double setPoint, boolean down) {
 //        if(setPoint>NebulaConstants.Intake.MAX_POSITION ||
 //            setPoint<NebulaConstants.Intake.MIN_POSITION){
 //            motor.stop();
 //            return;
 //        }
         controller.setSetPoint(setPoint);
-        if(reset){NebulaConstants.Intake.intakeTime.reset();}
+
+        if(down){
+            setDown();
+        } else {
+            setUp();
+        }
+//        if(reset){NebulaConstants.Intake.intakeTime.reset();} //Just Add if using this feature
     }
 
     //TODO: Test!
-    public Command setSetPointCommand(double setPoint, boolean reset) {
-        return new InstantCommand(()->{setSetPoint(setPoint, reset);});
+    public Command setSetPointCommand(double setPoint, boolean down) {
+        return new InstantCommand(()->{setSetPoint(setPoint, down);});
     }
     public Command setSetPointCommand(IntakeRPM pos) {
-        return setSetPointCommand(pos.speed, pos.reset);
+        return setSetPointCommand(pos.speed, pos.down);
 //        return new InstantCommand(()->{setSetPoint(pos);});
     }
 
-    public void encoderReset() {//Motors wouldn't need reset
-        motorGroup.resetEncoder();
+    public void encoderReset() {//Motors wouldn't need reset; Would It
+        motor.resetEncoder();
     }
     public double getSetPoint(){
         return controller.getSetPoint();
     }
 
-    public boolean isIntaked(){//TODO:Needs to have something where it times
-        if(NebulaConstants.Intake.intakeTime.seconds()>2){
-            return controller.getVelocityError()>100;//Whatever the Number is
-        }
-        return false;
+//    public boolean isIntaked(){
+//        //TODO:Needs to have something where it times
+//        // Would be for coontroller shaking (FRC 2023)
+//        if(NebulaConstants.Intake.intakeTime.seconds()>2){
+//            return controller.getVelocityError()>100;//Whatever the Number is
+//        }
+//        return false;
+//    }
+
+    private void setDown(){
+        intakeServoR.setPosition(IntakePos.DOWN.rPos);
+        intakeServoL.setPosition(IntakePos.DOWN.lPos);
     }
+    private void setUp(){
+        intakeServoR.setPosition(IntakePos.UP.rPos);
+        intakeServoL.setPosition(IntakePos.UP.lPos);
+    }
+
 }

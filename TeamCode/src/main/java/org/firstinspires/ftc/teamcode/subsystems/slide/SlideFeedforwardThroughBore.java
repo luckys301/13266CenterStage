@@ -7,14 +7,15 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.NebulaConstants;
 import org.firstinspires.ftc.teamcode.util.odoPod.Encoder;
-
+@Deprecated
+//Do Not Delete
 public class SlideFeedforwardThroughBore extends SlideFeedforward {
     protected final Encoder slideEncoder;// Plugged into Motor
 
     public SlideFeedforwardThroughBore(Telemetry tl, HardwareMap hw, boolean isEnabled) {
         super(tl, hw, isEnabled);
         slideEncoder = new Encoder(
-            hw.get(DcMotorEx.class, NebulaConstants.Slide.slideMName1));
+            hw.get(DcMotorEx.class, NebulaConstants.Slide.slideRName));
         slideEncoder.getCurrentPosition();
         slideEncoder.setDistancePerPulse(NebulaConstants.Slide.slideDistancePerPulse);
     }
@@ -33,11 +34,9 @@ public class SlideFeedforwardThroughBore extends SlideFeedforward {
                 (slideFeedforward.calculate(start.position, start.velocity)));
             setPower(output);//TODO: Probably shouldn't be like this
         }
-        telemetry.addLine("Slide - ");
-        telemetry.addData("     Lift Motor Output:", output);
-        telemetry.addData("     Lift1 Encoder: ", slideM1.getPosition());
-        telemetry.addData("     List Pos:", getSetPoint());
-
+        telemetry.addData("Slide Motor Output:", output);
+        telemetry.addData("Slide1 Encoder: ", slideM1.getPosition());
+        telemetry.addData("Slide Pos:", getSetPoint());
     }
 
 //    @Override

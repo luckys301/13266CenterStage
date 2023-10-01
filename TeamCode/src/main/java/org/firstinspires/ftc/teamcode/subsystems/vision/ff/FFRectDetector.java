@@ -66,21 +66,16 @@ public class FFRectDetector {
         return ftclibPipeline.getPosition();
     }
 
-    public void setThreshold(int threshold) {
-        ftclibPipeline.setThreshold(threshold);
-    }
-
-    public double getLeftAverage() {
-        return ftclibPipeline.getLeftAverage();
-    }
-
-    public double getCenterAverage() {
-        return ftclibPipeline.getCenterAverage();
-    }
-
-    public double getRightAverage() {
-        return ftclibPipeline.getRightAverage();
-    }
+//    public void setThreshold(int threshold) {ftclibPipeline.setThreshold(threshold);}
+//    public double getLeftAverage() {
+//        return ftclibPipeline.getLeftAverage();
+//    }
+//    public double getCenterAverage() {
+//        return ftclibPipeline.getCenterAverage();
+//    }
+//    public double getRightAverage() {
+//        return ftclibPipeline.getRightAverage();
+//    }
 
     public void setLeftRectangle(double x, double y) {
         ftclibPipeline.setLeftRectangle(x,y);
