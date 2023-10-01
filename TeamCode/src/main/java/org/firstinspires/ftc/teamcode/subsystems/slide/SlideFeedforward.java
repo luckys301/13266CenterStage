@@ -36,9 +36,10 @@ public class SlideFeedforward extends Slide {
                 (slideFeedforward.calculate(start.position, start.velocity)));
             setPower(output);//TODO: Probably shouldn't be like this
         }
-        telemetry.addLine("Slide - ");
-        telemetry.addData("     Lift Motor Output:", output);
-        telemetry.addData("     Lift1 Encoder: ", slideM1.getPosition());
-        telemetry.addData("     List Pos:", getSetPoint());
+
+
+        telemetry.addData("Slide Motor Output:", output);
+        telemetry.addData("Slide1 Encoder: ", slideM1.getPosition());
+        telemetry.addData("Slide Pos:", getSetPoint());
     }
 }

@@ -26,8 +26,8 @@ public class DefaultTankDriveCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double y = NebulaConstants.Gamepad.isDriverOneDeadband(driverGamepad.getLeftY()),
-            rx = NebulaConstants.Gamepad.isDriverOneDeadband(driverGamepad.getRightX());
+        double y = NebulaConstants.GamePad.isDriverOneDeadband(driverGamepad.getLeftY()),
+            rx = NebulaConstants.GamePad.isDriverOneDeadband(driverGamepad.getRightX());
 
         y = NebulaConstants.cubeInput(y);
         rx = NebulaConstants.cubeInput(rx);

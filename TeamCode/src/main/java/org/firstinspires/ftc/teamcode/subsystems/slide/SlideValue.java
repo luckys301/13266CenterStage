@@ -9,7 +9,7 @@ public class SlideValue {
         HIGH(0.0),
 
         MANUAL(0.0);
-        public double value;
+        public final double value;
         SlideEnum(double value) {
             this.value = value;
         }

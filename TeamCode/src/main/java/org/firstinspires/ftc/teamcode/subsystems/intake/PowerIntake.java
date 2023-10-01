@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.NebulaConstants;
 import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaMotor;
 import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaMotorGroup;
-
+@Deprecated
 @Config
 public class PowerIntake extends SubsystemBase {
     public final NebulaMotorGroup motorGroup;
