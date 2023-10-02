@@ -25,6 +25,7 @@ public class Slide extends SubsystemBase {
     protected double output = 0;
     protected boolean dropBoolean = false;
 
+    //TODO: Should the Slide even drop?
     public static SlideValue REST = make(SlideEnum.TRANSFER, true);
     public static SlideValue LOW = make(SlideEnum.LOW, true);
     public static SlideValue MID = make(SlideEnum.MID,5,false);
@@ -86,6 +87,7 @@ public class Slide extends SubsystemBase {
         }
         telemetry.addData("Slide Motor Output:", output);
         telemetry.addData("Slide1 Encoder: ", slideM1.getPosition());
+        telemetry.addData("Slide2 Encoder: ", slideM2.getPosition());
         telemetry.addData("Slide Pos:", getSetPoint());
     }
 
@@ -119,29 +121,29 @@ public class Slide extends SubsystemBase {
         slideM2.resetEncoder();
     }
 
-    public boolean isSlideAutomatic(){
-        return slideAutomatic;
-    }
+//    public boolean isSlideAutomatic(){
+//        return slideAutomatic;
+//    }
 
-    public void dropSlide(){
-        switch (slidePos){
-//            case LOW:
-//                upController.setSetPoint(LOW_POS+350);
+//    public void dropSlide(){
+//        switch (slidePos){
+////            case LOW:
+////                upController.setSetPoint(LOW_POS+350);
+////                break;
+////            case MID:
+////                upController.setSetPoint(MID_POS+200);
+////                break;
+//            case HIGH:
+//                slideController.setSetPoint(HIGH.slidePosition-740);
 //                break;
-//            case MID:
-//                upController.setSetPoint(MID_POS+200);
-//                break;
-            case HIGH:
-                slideController.setSetPoint(HIGH.slidePosition-740);
-                break;
-//            case AUTO_MID:
-//                slideController.setSetPoint(AUTO_MID.slidePosition-290);
-//                break;
-//            case AUTO_HIGH:
-//                slideController.setSetPoint(AUTO_HIGH.slidePosition-650);
-//                break;
-        }
-    }
+////            case AUTO_MID:
+////                slideController.setSetPoint(AUTO_MID.slidePosition-290);
+////                break;
+////            case AUTO_HIGH:
+////                slideController.setSetPoint(AUTO_HIGH.slidePosition-650);
+////                break;
+//        }
+//    }
 
     public void setSetPoint(double setPoint, boolean lowBool) {
         if(NebulaConstants.GamePad.overrideSafety){
@@ -163,8 +165,10 @@ public class Slide extends SubsystemBase {
     }
     public Command setSetPointCommand(SlideValue pos) {
         slidePos = pos.slideEnum;
-        return new InstantCommand(()->{this.setSetPoint(pos.slidePosition, pos.shouldSlideDrop);});
+        return new InstantCommand(()->{
+            this.setSetPoint(pos.slidePosition, pos.shouldSlideDrop);});
     }
+
     public double getSetPoint() {
         return slideController.getSetPoint();
     }

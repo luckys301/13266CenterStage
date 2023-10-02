@@ -50,12 +50,12 @@ public class Arm extends SubsystemBase
         telemetry.addData("ArmR Pos: ", armR.getPosition());
         telemetry.addData("ArmL Pos: ", armL.getPosition());
     }
-    public void armSetPosition(ArmPos armPos) {
+
+    private void armSetPosition(ArmPos armPos) {
         armR.setPosition(armPos.armRPos);
         armL.setPosition(armPos.armLPos);
     }
     public Command armSetPositionCommand(ArmPos armPos) {
         return new InstantCommand(()->{armSetPosition(armPos);});
     }
-
 }

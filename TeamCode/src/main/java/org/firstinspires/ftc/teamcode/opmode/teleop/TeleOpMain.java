@@ -9,16 +9,15 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys.Button;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.commands.arm.arm.PivotMoveManual;
 import org.firstinspires.ftc.teamcode.commands.arm.slide.SlideMoveManual;
 import org.firstinspires.ftc.teamcode.commands.drive.teleop.DefaultTankDriveCommand;
+import org.firstinspires.ftc.teamcode.subsystems.Claw;
+import org.firstinspires.ftc.teamcode.subsystems.arm.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.drive.SixWheel;
 import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.old.Claw;
-import org.firstinspires.ftc.teamcode.subsystems.old.Pivot;
 import org.firstinspires.ftc.teamcode.subsystems.old.Slide;
-import org.firstinspires.ftc.teamcode.subsystems.old.TurnServo;
+import org.firstinspires.ftc.teamcode.subsystems.shooter.Shooter;
 import org.firstinspires.ftc.teamcode.util.teleop.GamepadTrigger;
 import org.firstinspires.ftc.teamcode.util.teleop.MatchOpMode;
 
@@ -32,38 +31,47 @@ public class TeleOpMain extends MatchOpMode {
 
 
     // Subsystems
-    //Most of these old subsystems
-    private Pivot pivot;
-    private Claw claw;
     private Drivetrain drivetrain;
     private Slide slide;
-    private TurnServo turnServo;
     private Intake intake;
+    private Arm arm;
+    private Claw claw;
+    private Shooter shooter;
 
     @Override
     public void robotInit() {
+
         driverGamepad = new GamepadEx(gamepad1);
         operatorGamepad = new GamepadEx(gamepad2);
 
-        pivot = new Pivot(telemetry, hardwareMap);
-        claw = new Claw(telemetry, hardwareMap);
-        turnServo = new TurnServo(telemetry, hardwareMap);
+//        pivot = new Pivot(telemetry, hardwareMap);
+        claw = new Claw(telemetry, hardwareMap, true);
+//        turnServo = new TurnServo(telemetry, hardwareMap);
         drivetrain = new Drivetrain(new SixWheel(hardwareMap), telemetry);
-        drivetrain.init();
-        slide = new Slide(telemetry, hardwareMap);
+//        drivetrain.init();
+//        slide = new Slide(telemetry, hardwareMap);
 //        pivot.resetOffset();
-        pivot.moveInitializationPosition();
+//        pivot.moveInitializationPosition();
         intake = new Intake(telemetry, hardwareMap, true);
+        arm = new Arm (telemetry, hardwareMap, true);
+        shooter = new Shooter(telemetry, hardwareMap, true);
     }
 
 
     @Override
     public void configureButtons() {
+        //Claw
         com.arcrobotics.ftclib.command.button.Button up = (new GamepadTrigger(driverGamepad, GamepadKeys.Trigger.LEFT_TRIGGER)
                 .whenPressed(new InstantCommand(()->claw.clawOpen())));
 
         com.arcrobotics.ftclib.command.button.Button close= (new GamepadButton(driverGamepad,  Button.DPAD_DOWN)
                 .whenPressed(new  InstantCommand(()->claw.clawClose())));
+
+        //Arm
+        com.arcrobotics.ftclib.command.button.Button armTransfer = (new GamepadButton(operatorGamepad, Button.DPAD_DOWN))
+                .whenPressed(arm.armSetPositionCommand(Arm.ArmPos.TRANSFER));
+        com.arcrobotics.ftclib.command.button.Button armOuttake = (new GamepadButton(operatorGamepad, Button.DPAD_UP))
+                .whenPressed(arm.armSetPositionCommand(Arm.ArmPos.OUTTAKE));
 
         //Intake
         Trigger INTAKE= (new GamepadTrigger(driverGamepad, GamepadKeys.Trigger.LEFT_TRIGGER)
@@ -73,11 +81,31 @@ public class TeleOpMain extends MatchOpMode {
                 .whileHeld(intake.setSetPointCommand(Intake.IntakeRPM.OUTTAKE)))
                 .whenReleased(intake.setSetPointCommand(Intake.IntakeRPM.STOP));
 
+
+        //Shooter
+        com.arcrobotics.ftclib.command.button.Button shoot = (new GamepadButton(operatorGamepad, Button.RIGHT_BUMPER))
+                .whenPressed(shooter.shoot());
+
+        //Climber
+
+
+        //Slide
+//        Button slideRest  = (new GamepadButton(operatorGamepad, Button.A))
+//                .whenPressed(slide.setSetPositionCommand(Slide.SlidePos.REST));
+//        Button slideLow  = (new GamepadButton(operatorGamepad, Button.X))
+//                .whenPressed(slide.setSetPositionCommand(Slide.SlidePos.LOW));
+//        Button slideMid  = (new GamepadButton(operatorGamepad, Button.B))
+//                .whenPressed(slide.setSetPositionCommand(Slide.SlidePos.MID));
+//        Button slideHigh  = (new GamepadButton(operatorGamepad, Button.Y))
+//                .whenPressed(slide.setSetPositionCommand(Slide.SlidePos.HIGH));
+
+
 //        Button down = (new GamepadButton(driverGamepad, GamepadKeys.Button.DPAD_DOWN)
 //                .whenPressed(new InstantCommand(()->turnServo.setClawS3(turnServo.getPos()-0.05))));
         /*
          *  DRIVER
          */
+
         drivetrain.setDefaultCommand(new DefaultTankDriveCommand(drivetrain, driverGamepad));
 
 ////        Button recenterIMU = (new GamepadButton(driverGamepad, GamepadKeys.Button.A))
@@ -94,7 +122,7 @@ public class TeleOpMain extends MatchOpMode {
 //         */
 //
         slide.setDefaultCommand(new SlideMoveManual(slide, operatorGamepad::getRightY));
-        pivot.setDefaultCommand(new PivotMoveManual(pivot, operatorGamepad::getLeftY));
+//        pivot.setDefaultCommand(new PivotMoveManual(pivot, operatorGamepad::getLeftY));
     }
 
     @Override

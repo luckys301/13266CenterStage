@@ -23,8 +23,9 @@ public class Claw extends SubsystemBase
             this.clawPosition = clawPosition;
         }
     }
+
     Telemetry telemetry;
-    private final NebulaServo clawS1;     //Claw
+    private final NebulaServo clawS1, clawS2;     //Claw
 
     public Claw(Telemetry tl, HardwareMap hw, boolean isEnabled) {
         clawS1 = new NebulaServo(hw,
@@ -33,7 +34,14 @@ public class Claw extends SubsystemBase
             NebulaConstants.Claw.minAngle,
             NebulaConstants.Claw.maxAngle,
             isEnabled);
-        clawS1.setPosition(ClawPos.CLOSE_POS_S1.clawPosition);  //Port 3
+        //TODO: FIX!
+        clawS2 = new NebulaServo(hw,
+                NebulaConstants.Claw.clawSName,
+                NebulaConstants.Claw.clawDirection,
+                NebulaConstants.Claw.minAngle,
+                NebulaConstants.Claw.maxAngle,
+                isEnabled);
+        clawS1.setPosition(ClawPos.CLOSE_POS_S1.clawPosition);
 
         this.telemetry = tl;
     }
@@ -45,9 +53,9 @@ public class Claw extends SubsystemBase
 
 
 
-    public void clawAutoClose() {
-        clawS1.setPosition(ClawPos.AUTO_CLOSE_S1.clawPosition);
-    }
+//    public void clawAutoClose() {
+//clawS1.setPosition(ClawPos.AUTO_CLOSE_S1.clawPosition);
+//    }
     public void clawClose() {
         clawS1.setPosition(ClawPos.CLOSE_POS_S1.clawPosition);
     }
@@ -55,14 +63,13 @@ public class Claw extends SubsystemBase
     public void clawOpen() {
         clawS1.setPosition(ClawPos.OPEN_POS_S1.clawPosition);
     }
-    public void clawAutoOpen() {
-        clawS1.setPosition(ClawPos.AUTO_OPEN_S1.clawPosition);
-    }
+//    public void clawAutoOpen() {
+//        clawS1.setPosition(ClawPos.AUTO_OPEN_S1.clawPosition);
+//    }
 
-    public boolean isClawOpen(){
-//        return clawS1.getPosition()==ClawPos.OPEN_POS_S1;
-        return (clawS1.getPosition()==ClawPos.CLOSE_POS_S1.clawPosition) ||
-            (clawS1.getPosition()==ClawPos.AUTO_CLOSE_S1.clawPosition);
-    };
-
+//    public boolean isClawOpen(){
+////        return clawS1.getPosition()==ClawPos.OPEN_POS_S1;
+//        return (clawS1.getPosition()==ClawPos.CLOSE_POS_S1.clawPosition) ||
+//            (clawS1.getPosition()==ClawPos.AUTO_CLOSE_S1.clawPosition);
+//    };
 }
