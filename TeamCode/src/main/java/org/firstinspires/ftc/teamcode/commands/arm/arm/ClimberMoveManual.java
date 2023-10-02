@@ -2,23 +2,23 @@ package org.firstinspires.ftc.teamcode.commands.arm.arm;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
-import org.firstinspires.ftc.teamcode.subsystems.old.Pivot;
+import org.firstinspires.ftc.teamcode.subsystems.climber.Climber;
 
 import java.util.function.Supplier;
 
-public class PivotMoveManual extends CommandBase {
-    private final Pivot pivot;
+public class ClimberMoveManual extends CommandBase {
+    private final Climber climber;
     private final Supplier<Double> doubleSupplier;
-    public PivotMoveManual(Pivot pivot, Supplier<Double> doubleSupplier) {
-        this.pivot = pivot;
+    public ClimberMoveManual(Climber climber, Supplier<Double> doubleSupplier) {
+        this.climber = climber;
         this.doubleSupplier = doubleSupplier;
-        addRequirements(pivot);
+        addRequirements(climber);
     }
     @Override
     public void execute() {
         double position = doubleSupplier.get();
         if (Math.abs(position) > 0.1) {
-            pivot.setPosition(pivot.getPosition() + position * 19);
+            climber.setSetPoint(climber.getSetPoint() + position * 19);
         }
     }
 }
