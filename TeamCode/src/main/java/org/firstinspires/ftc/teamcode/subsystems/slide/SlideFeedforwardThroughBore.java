@@ -22,20 +22,19 @@ public class SlideFeedforwardThroughBore extends SlideFeedforward {
 
     @Override
     public void periodic() {
-        if (slideAutomatic) {
-//            slideController.setF(NebulaConstants.Slide.slidePID.f * Math.cos(Math.toRadians(slideController.getSetPoint())));
-            constraints = new TrapezoidProfile.Constraints(
-                0,// radians per second
-                0);//radians per second per second
+//        slideController.setF(NebulaConstants.Slide.slidePID.f * Math.cos(Math.toRadians(slideController.getSetPoint())));
+        constraints = new TrapezoidProfile.Constraints(
+            0,// radians per second
+            0);//radians per second per second
 
-//            trapezoidProfile = new TrapezoidProfile(constraints, goal, start);
-            start = trapezoidProfile.calculate(0.02);
-            double output = (slideController.calculate(getEncoderDistance()) +
-                (slideFeedforward.calculate(start.position, start.velocity)));
-            setPower(output);//TODO: Probably shouldn't be like this
-        }
+//        trapezoidProfile = new TrapezoidProfile(constraints, goal, start);
+        start = trapezoidProfile.calculate(0.02);
+        double output = (slideController.calculate(getEncoderDistance()) +
+            (slideFeedforward.calculate(start.position, start.velocity)));
+        setPower(output);//TODO: Probably shouldn't be like this
+
         telemetry.addData("Slide Motor Output:", output);
-        telemetry.addData("Slide1 Encoder: ", slideM1.getPosition());
+        telemetry.addData("Slide1 Encoder: ", slideR.getPosition());
         telemetry.addData("Slide Pos:", getSetPoint());
     }
 
