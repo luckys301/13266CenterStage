@@ -5,8 +5,10 @@ package org.firstinspires.ftc.teamcode.util.nebulaHardware;
  * as a single group. Multiple motors will act together.
  *
  */
+//NO WORK -TO FIX
 public class NebulaMotorGroup {
     private final NebulaMotor[] group;
+//    private final MotorGroup group2;
 
     /**
      * Create a new NebulaMotorGroup with the provided Motors.
@@ -15,6 +17,7 @@ public class NebulaMotorGroup {
      */
     public NebulaMotorGroup(NebulaMotor... motors) {
         group = motors;
+//        group = new MotorGroup(group[0].getMotor(), group[1].getMotor());
     }
 
 
@@ -24,7 +27,7 @@ public class NebulaMotorGroup {
      * @param speed The speed to set. Value should be between -1.0 and 1.0.
      */
     public void setPower(double speed) {
-        for (NebulaMotor x : group) {
+        for (NebulaMotor x : group) {//TODO:Test?
 //            x.setPower(x.getInverted() ? -speed : speed);
             x.setPower(speed);
         }

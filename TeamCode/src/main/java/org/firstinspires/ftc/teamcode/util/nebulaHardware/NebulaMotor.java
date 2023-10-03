@@ -183,4 +183,8 @@ public class NebulaMotor{
                                      IdleMode behavior, Boolean isEnabled){
         return new NebulaMotor(hM, deviceId, type, direction, behavior, isEnabled);
     }
+
+    public Motor getMotor(){
+        return motor;
+    }
 }
