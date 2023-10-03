@@ -33,21 +33,21 @@ public class Climber extends SubsystemBase {
 
     public Climber(Telemetry tl, HardwareMap hw, boolean isEnabled) {
         climber = new NebulaMotor(hw,
-            NebulaConstants.Slide.slideRName,
-            NebulaConstants.Slide.slideType,
-            NebulaConstants.Slide.slideRDirection,
-            NebulaConstants.Slide.slideIdleMode,
+            NebulaConstants.Climber.climberName,
+            NebulaConstants.Climber.climberType,
+            NebulaConstants.Climber.climberDirection,
+            NebulaConstants.Climber.climberIdleMode,
             isEnabled);
 
-        climber.setDistancePerPulse(NebulaConstants.Slide.slideDistancePerPulse);
+        climber.setDistancePerPulse(NebulaConstants.Climber.climberDistancePerPulse);
 
-        climberController = new PIDFController(NebulaConstants.Slide.slidePID.p,
-            NebulaConstants.Slide.slidePID.i,
-            NebulaConstants.Slide.slidePID.d,
-            NebulaConstants.Slide.slidePID.f,
+        climberController = new PIDFController(NebulaConstants.Climber.climberPID.p,
+            NebulaConstants.Climber.climberPID.i,
+            NebulaConstants.Climber.climberPID.d,
+            NebulaConstants.Climber.climberPID.f,
             getEncoderDistance(),
             getEncoderDistance());
-        climberController.setTolerance(NebulaConstants.Slide.slideTolerance);
+        climberController.setTolerance(NebulaConstants.Climber.climberTolerance);
 
         this.telemetry = tl;
         climbPos = ClimbEnum.REST;

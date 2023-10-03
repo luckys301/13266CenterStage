@@ -10,11 +10,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.NebulaConstants;
 import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaMotor;
-import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaMotorGroup;
 
 @Config
 public class Slide extends SubsystemBase {
-    public final NebulaMotorGroup motorGroup;
+//    public final NebulaMotorGroup motorGroup;
     protected Telemetry telemetry;
     protected NebulaMotor slideR, slideL;
     protected PIDFController slideController;
@@ -22,17 +21,13 @@ public class Slide extends SubsystemBase {
 //    protected boolean dropBoolean = false;
 
     //TODO: Should the Slide even drop?
-//    public static SlideValue REST = make(SlideEnum.TRANSFER, true);
-//    public static SlideValue LOW = make(SlideEnum.LOW, true);
-//    public static SlideValue MID = make(SlideEnum.MID,5,false);
-//    public static SlideValue HIGH = make(SlideEnum.HIGH,5,false);
 
     public enum SlideEnum {
         TRANSFER(0.0),
 
-        LOW(0.0),
-        MID(0.0),
-        HIGH(0.0),
+        LOW(-150),
+        MID(-300),
+        HIGH(-400),
 
         MANUAL(0.0);
         public final double slidePos;
@@ -58,10 +53,11 @@ public class Slide extends SubsystemBase {
             NebulaConstants.Slide.slideIdleMode,
             isEnabled);
 
-        motorGroup = new NebulaMotorGroup(slideR, slideL);
-        motorGroup.setDistancePerPulse(NebulaConstants.Slide.slideDistancePerPulse);
+//        motorGroup = new NebulaMotorGroup(slideR, slideL);
+        slideR.setDistancePerPulse(NebulaConstants.Slide.slideDistancePerPulse);
 
-        slideController = new PIDFController(NebulaConstants.Slide.slidePID.p,
+        slideController = new PIDFController(
+                NebulaConstants.Slide.slidePID.p,
             NebulaConstants.Slide.slidePID.i,
             NebulaConstants.Slide.slidePID.d,
             NebulaConstants.Slide.slidePID.f,
@@ -87,26 +83,28 @@ public class Slide extends SubsystemBase {
 
     public double getEncoderDistance() {
 //        return slideM1.getDistance();
-        return motorGroup.getPosition();
+        return slideR.getPosition();
         //TODO:Does this work?
     }
 
 
     public void setPower(double power) {
-        motorGroup.setPower(power);
+        slideR.setPower(power);
+        slideL.setPower(-power);
 //        slideM1.setPower(power);
 //        slideM2.setPower(power);//Instead of putting -power, maybe reverse the motor
     }
 
     public void stopSlide() {
-        motorGroup.stop();
+        slideR.stop();
         slideController.setSetPoint(getEncoderDistance());
     }
     /****************************************************************************************/
 
 
     public void resetEncoder() {
-        motorGroup.resetEncoder();
+        slideR.resetEncoder();
+        slideL.resetEncoder();
     }
 
 
