@@ -109,10 +109,13 @@ public class RedBackstage extends MatchOpMode {
         public static class Path {
             public static PreLoad apreLoad;
             public static class PreLoad {
-                public static Pose2dContainer startPose = new Pose2dContainer(34.9, -65, 90);
-                public static Forward a = new Forward(34);
-                public static SplineTo b = new SplineTo(28.6, -3.95, 130);
-                static TrajectorySequenceContainer preload = new TrajectorySequenceContainer(Speed::getPreLoadDropConstraints, a, b);
+                public static Pose2dContainer startPose = new Pose2dContainer(10, -65, (90));
+                public static Forward a = new Forward(20);
+                public static Turn b = new Turn(90);
+                public static Forward c = new Forward(-43);
+//                public static SplineTo b = new SplineTo(28.6, -3.95, 130);
+                static TrajectorySequenceContainer preload =
+                        new TrajectorySequenceContainer(Speed::getPreLoadDropConstraints, a, b, c);
             }
 
             public static Cycle1Pickup bcycle1Pickup;
@@ -123,45 +126,45 @@ public class RedBackstage extends MatchOpMode {
                 static TrajectorySequenceContainer cycle1Pickup = new TrajectorySequenceContainer(Speed::getPickupConstraints, a, b, c);
             }
 
-            public static Cycle1Drop ccycle1Drop;
-            public static class Cycle1Drop {
-                public static SetReversed a = new SetReversed(true);
-                public static Forward b = new Forward(16);
-                public static SplineTo c = new SplineTo(34.75, -14.15, -138);
-                static TrajectorySequenceContainer cycle1Drop = new TrajectorySequenceContainer(Speed::getDropConstraints, a, b, c);
-            }
-
-            public static Cycle2Pickup dcycle2Pickup;
-            public static class Cycle2Pickup {
-                public static SetReversed a = new SetReversed(true);
-                public static SplineTo b = new SplineTo(49.1, -9.5, 0);
-                public static Back c = new Back(13.69);
-                static TrajectorySequenceContainer cycle2Pickup = new TrajectorySequenceContainer(Speed::getPickupConstraints, a, b, c);
-            }
-
-            public static Cycle2Drop ecycle2Drop;
-            public static class Cycle2Drop {
-                public static SetReversed a = new SetReversed(true);
-                public static Forward b = new Forward(16);
-                public static SplineTo c = new SplineTo(34.75, -13.95, -135);//255
-                static TrajectorySequenceContainer cycle2Drop = new TrajectorySequenceContainer(Speed::getDropConstraints, a, b, c);
-            }
-
-            public static Cycle3Pickup fcycle3Pickup;
-            public static class Cycle3Pickup {
-                public static SetReversed a = new SetReversed(true);
-                public static SplineTo b = new SplineTo(51.5, -9.1, 0);
-                public static Back c = new Back(13.08);
-                static TrajectorySequenceContainer cycle3Pickup = new TrajectorySequenceContainer(Speed::getPickupConstraints, a, b, c);
-            }
-
-            public static Cycle3Drop gcycle3Drop;
-            public static class Cycle3Drop {
-                public static SetReversed a = new SetReversed(true);
-                public static Forward b = new Forward(15.5);//16
-                public static SplineTo c = new SplineTo(34.75, -13.95, -135);
-                static TrajectorySequenceContainer cycle3Drop = new TrajectorySequenceContainer(Speed::getDropConstraints, a, b, c);
-            }
+//            public static Cycle1Drop ccycle1Drop;
+//            public static class Cycle1Drop {
+//                public static SetReversed a = new SetReversed(true);
+//                public static Forward b = new Forward(16);
+//                public static SplineTo c = new SplineTo(34.75, -14.15, -138);
+//                static TrajectorySequenceContainer cycle1Drop = new TrajectorySequenceContainer(Speed::getDropConstraints, a, b, c);
+//            }
+//
+//            public static Cycle2Pickup dcycle2Pickup;
+//            public static class Cycle2Pickup {
+//                public static SetReversed a = new SetReversed(true);
+//                public static SplineTo b = new SplineTo(49.1, -9.5, 0);
+//                public static Back c = new Back(13.69);
+//                static TrajectorySequenceContainer cycle2Pickup = new TrajectorySequenceContainer(Speed::getPickupConstraints, a, b, c);
+//            }
+//
+//            public static Cycle2Drop ecycle2Drop;
+//            public static class Cycle2Drop {
+//                public static SetReversed a = new SetReversed(true);
+//                public static Forward b = new Forward(16);
+//                public static SplineTo c = new SplineTo(34.75, -13.95, -135);//255
+//                static TrajectorySequenceContainer cycle2Drop = new TrajectorySequenceContainer(Speed::getDropConstraints, a, b, c);
+//            }
+//
+//            public static Cycle3Pickup fcycle3Pickup;
+//            public static class Cycle3Pickup {
+//                public static SetReversed a = new SetReversed(true);
+//                public static SplineTo b = new SplineTo(51.5, -9.1, 0);
+//                public static Back c = new Back(13.08);
+//                static TrajectorySequenceContainer cycle3Pickup = new TrajectorySequenceContainer(Speed::getPickupConstraints, a, b, c);
+//            }
+//
+//            public static Cycle3Drop gcycle3Drop;
+//            public static class Cycle3Drop {
+//                public static SetReversed a = new SetReversed(true);
+//                public static Forward b = new Forward(15.5);//16
+//                public static SplineTo c = new SplineTo(34.75, -13.95, -135);
+//                static TrajectorySequenceContainer cycle3Drop = new TrajectorySequenceContainer(Speed::getDropConstraints, a, b, c);
+//            }
             public static Park jpark;
             public static class Park {
                 public static double leftX = 7;
