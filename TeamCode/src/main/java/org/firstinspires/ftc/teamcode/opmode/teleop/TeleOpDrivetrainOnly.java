@@ -26,12 +26,12 @@ public class TeleOpDrivetrainOnly extends MatchOpMode {
         driverGamepad = new GamepadEx(gamepad1);
         drivetrain = new Drivetrain(new SixWheel(hardwareMap),telemetry);
         drivetrain.init();
-        drivetrain.setDefaultCommand(new DefaultTankDriveCommand(drivetrain, driverGamepad));
     }
 
 
     @Override
     public void configureButtons() {
+        drivetrain.setDefaultCommand(new DefaultTankDriveCommand(drivetrain, driverGamepad));
     }
 
     @Override

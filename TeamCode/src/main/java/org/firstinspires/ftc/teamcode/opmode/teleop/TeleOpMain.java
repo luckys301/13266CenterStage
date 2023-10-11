@@ -35,6 +35,7 @@ public class TeleOpMain extends MatchOpMode {
 
 //        claw = new Claw(telemetry, hardwareMap, true);
         drivetrain = new Drivetrain(new SixWheel(hardwareMap), telemetry);
+        drivetrain.init();
 //        intake = new Intake(telemetry, hardwareMap, true);
 //        arm = new Arm (telemetry, hardwareMap, true);
 //        shooter = new Shooter(telemetry, hardwareMap, true);

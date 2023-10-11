@@ -32,10 +32,10 @@ public class DefaultTankDriveCommand extends CommandBase {
         y = NebulaConstants.cubeInput(y);
         rx = NebulaConstants.cubeInput(rx);
         //TODO:See if this works
-        if(Math.abs(drive.getDegreeRoll())> NebulaConstants.Drive.tippingTolerance){
-            y = yTipController.calculate(drive.getDegreePitch(), 0);//Make sure this is the right IMU
-        }
-        drive.arcadeDrive.arcadeDrive(y*multiplier, rx*multiplier);
+//        if(Math.abs(drive.getDegreeRoll())> NebulaConstants.Drive.tippingTolerance){
+//            y = yTipController.calculate(drive.getDegreePitch(), 0);//Make sure this is the right IMU
+//        }
+        drive.arcadeDrive(y*multiplier, rx*multiplier);
 //        drive.tankDrive(lY * multiplier, rY * multiplier);
     }
 
