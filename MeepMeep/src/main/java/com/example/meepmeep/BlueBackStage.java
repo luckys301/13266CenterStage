@@ -13,13 +13,16 @@ public class BlueBackStage {
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(15, 46, 270))
-                                .back(10)
-                                .turn(0.5*Math.PI)
-                                .lineToSplineHeading(new Pose2d(56, 46))
+                        drive.trajectorySequenceBuilder(new Pose2d(10, 65, Math.toRadians(270)))
+                                .forward(30)
+                                .turn(Math.toRadians(-90))
+                                .forward(-40)
 
-//                                .forward(30)
-//                                .turn(Math.toRadians(90))
+
+
+//                                .back(10)
+//                                .turn(0.5*Math.PI)
+//                                .lineToSplineHeading(new Pose2d(56, 46))
                                 .build()
                 );
 
