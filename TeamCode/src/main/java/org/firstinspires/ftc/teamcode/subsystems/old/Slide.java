@@ -33,7 +33,7 @@ public class  Slide extends SubsystemBase {
 
     //REMEMBER THAT IF ENCODER POSITIONS GET SWITCHED, SWITCH THE DROP SLIDE VALUES TOO
     public static int RESTING_POS = -15;
-    public static int GROUND_POS = 30;
+//    public static int GROUND_POS = 30;
     public static int LOW_POS = 315;
     public static int MID_POS = 738;
     public static int HIGH_POS = 1240;
@@ -186,13 +186,6 @@ public class  Slide extends SubsystemBase {
         slideM2.resetEncoder();
         telemetry.addLine("SLIDE RESET");
     }
-
-    public void slideGround() {
-        slideAutomatic = true;
-        lowBool = true;
-        upController.setSetPoint(GROUND_POS);
-        liftPos = LiftPos.GROUND;
-    }
     public void slideLow() {
         slideAutomatic = true;
         lowBool = false;
@@ -211,82 +204,6 @@ public class  Slide extends SubsystemBase {
         upController.setSetPoint(HIGH_POS);
         liftPos = LiftPos.HIGH;
     }
-
-
-    public void slideCone5() {
-        slideAutomatic = true;
-        lowBool = false;
-        upController.setSetPoint(CONE_5_POS);
-        liftPos = LiftPos.FIVE;
-    }
-    public void slideCone4() {
-        slideAutomatic = true;
-        lowBool = false;
-        upController.setSetPoint(CONE_4_POS);
-        liftPos = LiftPos.FOUR;
-    }
-    public void slideCone3() {
-        slideAutomatic = true;
-        lowBool = false;
-        upController.setSetPoint(CONE_3_POS);
-        liftPos = LiftPos.THREE;
-    }
-    public void slideCone2() {
-        slideAutomatic = true;
-        lowBool = false;
-        upController.setSetPoint(CONE_2_POS);
-        liftPos = LiftPos.TWO;
-    }
-    public void slideCone1() {
-        slideAutomatic = true;
-        lowBool = false;
-        upController.setSetPoint(CONE_1_POS);
-        liftPos = LiftPos.ONE;
-    }
-
-//    public void autoPickSlideUp() {
-//        slideAutomatic = true;
-//        lowBool = false;
-//        upController.setSetPoint(slideM1.getCurrentPosition()-200);
-////        liftPosition = 10;
-//    }
-//    public void autoDropSlideUp() {
-//        slideAutomatic = true;
-//        lowBool = false;
-//        upController.setSetPoint(slideM1.getCurrentPosition()+200);
-////        liftPosition = 11;
-//    }
-
-    public void slidePickUp(){
-        slideAutomatic = true;
-        upController.setSetPoint(slideM1.getCurrentPosition()-30);
-    }
-    public void slideAutoMid(){
-        slideAutomatic = true;
-        upController.setSetPoint(AUTO_MID_POS);
-        liftPos = LiftPos.AUTO_MID;
-    }
-//    public void slideConeStack() {
-//        slideAutomatic = true;
-//        lowBool = false;
-//        upController.setSetPoint(CONE_STACK_POS);
-//        liftPos = LiftPos.CONE_STACK;
-//    }
-    public void slideAutoHigh() {
-        slideAutomatic = true;
-        lowBool = false;
-        upController.setSetPoint(AUTO_HIGH_POS);
-        liftPos = LiftPos.AUTO_HIGH;
-    }
-
-
-//    public void setLift(double angle) {
-//        slideAutomatic = true;
-//        upController.setSetPoint(angle);
-//    }
-//    public boolean atTargetAngle() {
-//        return upController.atSetPoint();
-//    }
 
 
     public void setOffset() {

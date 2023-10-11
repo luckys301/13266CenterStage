@@ -18,8 +18,7 @@ public class CycleTracker {//TODO:Remove Static
         mean = 0,
         fastest = 0,
         slowest = 0,
-        high = 0,
-        low = 0,
+        score = 0,
         elapsedTime = 0;
 
     public CycleTracker(Telemetry tl) {
@@ -33,7 +32,7 @@ public class CycleTracker {//TODO:Remove Static
 
 
 
-    public void trackCycle(int num){
+    public void trackCycle(){
         double cycleTime = timer.seconds();
         stat.addNumber(cycleTime);
         cycle = stat.getSizeDouble();
@@ -48,14 +47,7 @@ public class CycleTracker {//TODO:Remove Static
         //     case LOW:
         //         low.set(low.get()+1);
         //         break;
-        switch (num){
-            case 1:
-                high = (high+1);
-                break;
-            case 2:
-                low = (low+1);
-                break;
-        }    // }
+        score+=1;
         timer.reset();
     }
 
@@ -88,10 +80,9 @@ public class CycleTracker {//TODO:Remove Static
         tl.addData("Mean", mean);
         tl.addData("Cycle", cycle);
 
-        tl.addData("high", high);
-        tl.addData("low", low);
+        tl.addData("Score", score);
 
-        tl.addData("fast", fastest);
-        tl.addData("slow", slowest);
+        tl.addData("Fast", fastest);
+        tl.addData("Slow", slowest);
     }
 }

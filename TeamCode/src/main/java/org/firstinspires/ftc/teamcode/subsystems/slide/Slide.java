@@ -71,7 +71,7 @@ public class Slide extends SubsystemBase {
 
     @Override
     public void periodic() {
-//        slideController.setF(NebulaConstants.Slide.slidePID.f * Math.cos(Math.toRadians(slideController.getSetPoint())));
+        slideController.setF(NebulaConstants.Slide.slidePID.f * Math.cos(Math.toRadians(slideController.getSetPoint())));
         output = slideController.calculate(getEncoderDistance());
         setPower(output);//TODO: Probably shouldn't be like this
 
@@ -82,8 +82,8 @@ public class Slide extends SubsystemBase {
     }
 
     public double getEncoderDistance() {
-//        return slideM1.getDistance();
-        return slideR.getPosition();
+        return slideR.getDistance();
+//        return slideR.getPosition();
         //TODO:Does this work?
     }
 
