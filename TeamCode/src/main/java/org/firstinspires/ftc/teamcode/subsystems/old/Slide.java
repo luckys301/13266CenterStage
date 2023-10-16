@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.subsystems.old;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
@@ -8,8 +7,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-@Config
+@Deprecated
+//@Config
 public class  Slide extends SubsystemBase {
     private final Telemetry telemetry;
     private final MotorEx slideM1;
@@ -167,9 +166,9 @@ public class  Slide extends SubsystemBase {
         return getEncoderDistance();
     }
 
-    public double getAngle2(){
-        return getEncoderDistance2();
-    }
+//    public double getAngle2(){
+//        return getEncoderDistance2();
+//    }
 
     /****************************************************************************************/
 

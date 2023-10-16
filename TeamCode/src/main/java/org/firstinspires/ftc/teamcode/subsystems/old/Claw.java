@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems.old;
 
 
-import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.ServoEx;
 import com.arcrobotics.ftclib.hardware.SimpleServo;
@@ -9,7 +8,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 @Deprecated
-@Config
+//@Config
 public class Claw extends SubsystemBase {
     //Claw Variables
     public final static double CLOSE_POS_S1 = 0.56,

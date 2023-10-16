@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems.old;
 
 
-import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
@@ -16,7 +15,7 @@ import java.util.logging.Level;
 
 @Deprecated
 
-@Config
+//@Config
 public class Pivot extends SubsystemBase {
 
     public static PIDFCoefficients pidfCoefficients = new PIDFCoefficients(.005, 0.00, 0.0,0);
