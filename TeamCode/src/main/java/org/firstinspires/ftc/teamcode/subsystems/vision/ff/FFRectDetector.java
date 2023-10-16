@@ -62,7 +62,7 @@ public class FFRectDetector {
         });
     }
 
-    public TeamMarkerPipeline.Position getPosition() {
+    public TeamMarkerPipeline.FFPosition getPosition() {
         return ftclibPipeline.getPosition();
     }
 

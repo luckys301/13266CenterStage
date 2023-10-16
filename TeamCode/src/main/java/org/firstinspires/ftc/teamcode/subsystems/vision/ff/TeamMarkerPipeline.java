@@ -26,24 +26,24 @@ public class TeamMarkerPipeline extends FFRectMarkerPipeline {
         setRectangleWidth(w);
     }
 
-    public Position getPosition() {
+    public FFPosition getPosition() {
         Util.logger(this, Level.INFO, "Left Avg: ", getLeftAverage());
 
         if(getLeftAverage() > getCenterAverage() && getLeftAverage() > getRightAverage()){
-            return Position.LEFT;
+            return FFPosition.LEFT;
         }
         else if(getCenterAverage() > getLeftAverage() && getCenterAverage() > getRightAverage()){
-            return Position.MIDDLE;
+            return FFPosition.MIDDLE;
         }
         else if(getRightAverage() > getLeftAverage() && getRightAverage() > getCenterAverage()){
-            return Position.RIGHT;
+            return FFPosition.RIGHT;
         }
         else{
-            return Position.RIGHT;
+            return FFPosition.RIGHT;
         }
     }
 
-    public enum Position {
+    public enum FFPosition {
         LEFT,
         MIDDLE,
         RIGHT,
