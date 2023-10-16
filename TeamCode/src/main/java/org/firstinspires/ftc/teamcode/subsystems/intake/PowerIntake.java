@@ -10,16 +10,16 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.NebulaConstants;
 import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaMotor;
-import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaMotorGroup;
-@Deprecated
+import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaServo;
+
+//@Deprecated
 @Config
 public class PowerIntake extends SubsystemBase {
-    public final NebulaMotorGroup motorGroup;
-
     public enum IntakePower {
         OUTTAKE(0.5),
         INTAKE(-0.5,true),
-        STOP(0);
+        STOP(0),
+        OUTTAKE_YELLOW(0.1);
 
         public final double power;
         public final boolean reset;
@@ -34,27 +34,36 @@ public class PowerIntake extends SubsystemBase {
     }
     IntakePower shooterRPM = IntakePower.STOP;
     Telemetry telemetry;
-    public final NebulaMotor motor, motor2;
+    public final NebulaMotor motor;
+    private final NebulaServo intakeServoR,intakeServoL;
+    
 
     public PowerIntake(Telemetry tl, HardwareMap hw, Boolean isEnabled) {
         motor = new NebulaMotor(hw, NebulaConstants.Intake.intakeMName,
             NebulaConstants.Intake.intakeType, NebulaConstants.Intake.intakeDirection,
             NebulaMotor.IdleMode.Coast, isEnabled);
-        motor2 = new NebulaMotor(hw, NebulaConstants.Intake.intakeM2Name,
-            NebulaConstants.Intake.intakeType, NebulaConstants.Intake.intake2Direction,
-            NebulaMotor.IdleMode.Coast, isEnabled);
-        motorGroup = new NebulaMotorGroup(motor, motor2);
-//        motor.setDistancePerPulse(1);
+        intakeServoR = new NebulaServo(hw,
+            NebulaConstants.Intake.intakeRName,
+            NebulaConstants.Intake.intakeRDirection,
+            NebulaConstants.Intake.minAngle,
+            NebulaConstants.Intake.maxAngle,
+            isEnabled);
+        intakeServoL = new NebulaServo(hw,
+            NebulaConstants.Intake.intakeLName,
+            NebulaConstants.Intake.intakeLDirection,
+            NebulaConstants.Intake.minAngle,
+            NebulaConstants.Intake.maxAngle,
+            isEnabled);
         this.telemetry = tl;
     }
 
     @Override
     public void periodic() {
-        telemetry.addData("Intake Speed:", motorGroup.getVelocity());
+        telemetry.addData("Intake Speed:", motor.getVelocity());
     }
 
     public void setPower(double power, boolean reset) {
-        motorGroup.setPower(power);
+        motor.setPower(power);
         if(reset){
             NebulaConstants.Intake.intakeTime.reset();
         }
@@ -71,7 +80,7 @@ public class PowerIntake extends SubsystemBase {
     }
 
     public void encoderReset() {//Motors wouldn't need reset
-        motorGroup.resetEncoder();
+        motor.resetEncoder();
     }
 
     @Deprecated //To FInd Alternative or Not Use

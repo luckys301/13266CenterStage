@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.NebulaConstants;
 import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaMotor;
 import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaServo;
-
+@Deprecated
 @Config
 public class Intake extends SubsystemBase {
     public final PIDFController controller;

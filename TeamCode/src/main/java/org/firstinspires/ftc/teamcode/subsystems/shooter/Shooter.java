@@ -44,6 +44,16 @@ public class Shooter extends SubsystemBase
     }
 
     public Command shoot() {
-        return new InstantCommand(()->shooter.setPosition(ShooterPos.SHOOT.shooterPos));
+        return shooterSetPositionCommand(ShooterPos.SHOOT);
+    }
+    public Command ready() {
+        return shooterSetPositionCommand(ShooterPos.READY);
+    }
+
+    private void shooterSetPosition(ShooterPos shooterPos) {
+        shooter.setPosition(shooterPos.shooterPos);
+    }
+    public Command shooterSetPositionCommand(ShooterPos shooterPos) {
+        return new InstantCommand(()->{shooterSetPosition(shooterPos);});
     }
 }
