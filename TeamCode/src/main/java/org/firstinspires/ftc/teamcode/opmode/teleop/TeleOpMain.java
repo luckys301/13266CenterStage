@@ -34,7 +34,7 @@ public class TeleOpMain extends MatchOpMode {
         operatorGamepad = new GamepadEx(gamepad2);
 
 //        claw = new Claw(telemetry, hardwareMap, true);
-        drivetrain = new Drivetrain(new SixWheel(hardwareMap), telemetry);
+        drivetrain = new Drivetrain(new SixWheel(hardwareMap), telemetry);  //Works
         drivetrain.init();
 //        intake = new Intake(telemetry, hardwareMap, true);
 //        arm = new Arm (telemetry, hardwareMap, true);
@@ -58,10 +58,10 @@ public class TeleOpMain extends MatchOpMode {
 //                .whenPressed(arm.armSetPositionCommand(Arm.ArmPos.OUTTAKE));
 //
 //        //Intake
-//        Trigger INTAKE= (new GamepadTrigger(driverGamepad, GamepadKeys.Trigger.LEFT_TRIGGER)
+//        Trigger INTAKE = (new GamepadTrigger(driverGamepad, GamepadKeys.Trigger.LEFT_TRIGGER)
 //                .whileHeld(intake.setSetPointCommand(Intake.IntakeRPM.INTAKE)))
 //                .whenReleased(intake.setSetPointCommand(Intake.IntakeRPM.STOP));
-//        Trigger outtake= (new GamepadTrigger(driverGamepad, GamepadKeys.Trigger.RIGHT_TRIGGER)
+//        Trigger outtake = (new GamepadTrigger(driverGamepad, GamepadKeys.Trigger.RIGHT_TRIGGER)
 //                .whileHeld(intake.setSetPointCommand(Intake.IntakeRPM.OUTTAKE)))
 //                .whenPressed(cycleTracker.trackCycle())
 //                .whenReleased(intake.setSetPointCommand(Intake.IntakeRPM.STOP));
