@@ -5,89 +5,72 @@ import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.arcrobotics.ftclib.hardware.ServoEx;
+import com.arcrobotics.ftclib.hardware.SimpleServo;
+import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.util.NebulaConstants;
-import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaMotor;
-import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaServo;
 
 //@Deprecated
 @Config
 public class PowerIntake extends SubsystemBase {
     public enum IntakePower {
         OUTTAKE(0.5),
-        INTAKE(-0.5,true),
+        INTAKE(-0.5),
         STOP(0),
         OUTTAKE_YELLOW(0.1);
 
         public final double power;
-        public final boolean reset;
         IntakePower(double power) {
             this.power = power;
-            this.reset = false;
-        }
-        IntakePower(double power, boolean reset) {
-            this.power = power;
-            this.reset = reset;
         }
     }
+    
+    public enum IntakePos {
+        UP(0),
+        DOWN(0);
+        
+        public final double rPos;
+        IntakePos(double rPos){
+            this.rPos = rPos;
+        }
+    }
+    
     IntakePower shooterRPM = IntakePower.STOP;
     Telemetry telemetry;
-    public final NebulaMotor motor;
-    private final NebulaServo intakeServoR,intakeServoL;
+    
+    private final MotorEx intakeMotor;
+    private final ServoEx intakeServoR;
     
 
-    public PowerIntake(Telemetry tl, HardwareMap hw, Boolean isEnabled) {
-        motor = new NebulaMotor(hw, NebulaConstants.Intake.intakeMName,
-            NebulaConstants.Intake.intakeType, NebulaConstants.Intake.intakeDirection,
-            NebulaMotor.IdleMode.Coast, isEnabled);
-        intakeServoR = new NebulaServo(hw,
-            NebulaConstants.Intake.intakeRName,
-            NebulaConstants.Intake.intakeRDirection,
-            NebulaConstants.Intake.minAngle,
-            NebulaConstants.Intake.maxAngle,
-            isEnabled);
-        intakeServoL = new NebulaServo(hw,
-            NebulaConstants.Intake.intakeLName,
-            NebulaConstants.Intake.intakeLDirection,
-            NebulaConstants.Intake.minAngle,
-            NebulaConstants.Intake.maxAngle,
-            isEnabled);
+    public PowerIntake(Telemetry tl, HardwareMap hw) {
+        intakeMotor = new MotorEx(hw, "intake");
+        intakeServoR = new SimpleServo(hw, "intakeServo", 0,360);
         this.telemetry = tl;
     }
 
     @Override
     public void periodic() {
-        telemetry.addData("Intake Speed:", motor.getVelocity());
+        telemetry.addData("Intake Speed:", intakeMotor.getVelocity());
     }
 
-    public void setPower(double power, boolean reset) {
-        motor.setPower(power);
-        if(reset){
-            NebulaConstants.Intake.intakeTime.reset();
-        }
+    private void setPower(double power) {
+        intakeMotor.set(power);
     }
 
     //TODO: Test!
-    public Command setSetPointCommand(double power, boolean reset) {
+    public Command setPowerCommand(double power) {
         return new InstantCommand(()->{
-            setPower(power, reset);});
+            setPower(power);
+        });
     }
-    public Command setSetPointCommand(IntakePower pos) {
-        return setSetPointCommand(pos.power, pos.reset);
+    public Command setPowerCommand(IntakePower pos) {
+        return setPowerCommand(pos.power);
 //        return new InstantCommand(()->{setSetPoint(pos);});
     }
 
     public void encoderReset() {//Motors wouldn't need reset
-        motor.resetEncoder();
-    }
-
-    @Deprecated //To FInd Alternative or Not Use
-    public boolean isIntaked(){//TODO:Needs to have something where it times
-        if(NebulaConstants.Intake.intakeTime.seconds()>2){
-//            return controller.getVelocityError()>100;//Whatever the Number is
-        }
-        return false;
+        intakeMotor.resetEncoder();
     }
 }

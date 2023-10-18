@@ -5,17 +5,17 @@ import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDFController;
+import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.NebulaConstants;
-import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaMotor;
 
 @Config
 public class Slide extends SubsystemBase {
 //    public final NebulaMotorGroup motorGroup;
     protected Telemetry telemetry;
-    protected NebulaMotor slideR, slideL;
+    protected MotorEx slideR, slideL;
     protected PIDFController slideController;
     protected double output = 0;
 //    protected boolean dropBoolean = false;
@@ -39,31 +39,17 @@ public class Slide extends SubsystemBase {
 
     protected static SlideEnum slidePos;
 
-    public Slide(Telemetry tl, HardwareMap hw, boolean isEnabled) {
-        slideR = new NebulaMotor(hw,
-            NebulaConstants.Slide.slideRName,
-            NebulaConstants.Slide.slideType,
-            NebulaConstants.Slide.slideRDirection,
-            NebulaConstants.Slide.slideIdleMode,
-            isEnabled);
-        slideL = new NebulaMotor(hw,
-            NebulaConstants.Slide.slideLName,
-            NebulaConstants.Slide.slideType,
-            NebulaConstants.Slide.slideLDirection,
-            NebulaConstants.Slide.slideIdleMode,
-            isEnabled);
+    public Slide(Telemetry tl, HardwareMap hw) {
+        slideR = new MotorEx(hw, "slideR");
+        slideL = new MotorEx(hw, "slideL");
 
 //        motorGroup = new NebulaMotorGroup(slideR, slideL);
-        slideR.setDistancePerPulse(NebulaConstants.Slide.slideDistancePerPulse);
+        slideR.setDistancePerPulse(1);
 
-        slideController = new PIDFController(
-                NebulaConstants.Slide.slidePID.p,
-            NebulaConstants.Slide.slidePID.i,
-            NebulaConstants.Slide.slidePID.d,
-            NebulaConstants.Slide.slidePID.f,
+        slideController = new PIDFController(0,0,0,0,
             getEncoderDistance(),
             getEncoderDistance());
-        slideController.setTolerance(NebulaConstants.Slide.slideTolerance);
+        slideController.setTolerance(1);
 
         this.telemetry = tl;
         slidePos = SlideEnum.TRANSFER;
@@ -71,13 +57,13 @@ public class Slide extends SubsystemBase {
 
     @Override
     public void periodic() {
-        slideController.setF(NebulaConstants.Slide.slidePID.f * Math.cos(Math.toRadians(slideController.getSetPoint())));
+        slideController.setF(slideController.getF() * Math.cos(Math.toRadians(slideController.getSetPoint())));
         output = slideController.calculate(getEncoderDistance());
         setPower(output);//TODO: Probably shouldn't be like this
 
         telemetry.addData("Slide Motor Output:", output);
-        telemetry.addData("Slide1 Encoder: ", slideR.getPosition());
-        telemetry.addData("Slide2 Encoder: ", slideL.getPosition());
+        telemetry.addData("Slide1 Encoder: ", slideR.getCurrentPosition());
+        telemetry.addData("Slide2 Encoder: ", slideL.getCurrentPosition());
         telemetry.addData("Slide Pos:", getSetPoint());
     }
 
@@ -89,14 +75,14 @@ public class Slide extends SubsystemBase {
 
 
     public void setPower(double power) {
-        slideR.setPower(power);
-        slideL.setPower(-power);
+        slideR.set(power);
+        slideL.set(-power);
 //        slideM1.setPower(power);
 //        slideM2.setPower(power);//Instead of putting -power, maybe reverse the motor
     }
 
     public void stopSlide() {
-        slideR.stop();
+        slideR.stopMotor();
         slideController.setSetPoint(getEncoderDistance());
     }
     /****************************************************************************************/
@@ -108,16 +94,7 @@ public class Slide extends SubsystemBase {
     }
 
 
-    public void setSetPoint(double setPoint) {
-        //TODO: Maybe should remove all Safety Stuff
-        if(NebulaConstants.GamePad.overrideSafety){
-            if(setPoint>NebulaConstants.Slide.MAX_POSITION ||
-                setPoint<NebulaConstants.Slide.MIN_POSITION){
-//                slideM1.stop();
-                return;
-            }
-        }
-
+    private void setSetPoint(double setPoint) {
         slideController.setSetPoint(setPoint);
     }
 

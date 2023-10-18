@@ -12,7 +12,8 @@ import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.internal.system.Misc;
-import org.firstinspires.ftc.teamcode.subsystems.drive.SixWheel;
+import org.firstinspires.ftc.teamcode.subsystems.drive.Drivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.util.odoPod.StandardTrackingWheelLocalizer;
 
 /**
@@ -45,8 +46,8 @@ public class TrackingWheelForwardOffsetTuner extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         Telemetry telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
-
-        SixWheel drive = new SixWheel(hardwareMap);
+    
+        MecanumDrive drive = new MecanumDrive(hardwareMap, telemetry);
 
         if (!(drive.getLocalizer() instanceof StandardTrackingWheelLocalizer)) {
             RobotLog.setGlobalErrorMsg("StandardTrackingWheelLocalizer is not being set in the "

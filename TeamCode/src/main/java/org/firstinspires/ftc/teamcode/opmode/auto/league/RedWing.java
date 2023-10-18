@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.commands.drive.trajectory.sequence.TrajectorySequenceContainerFollowCommand;
 import org.firstinspires.ftc.teamcode.opmode.auto.Speed;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drivetrain;
-import org.firstinspires.ftc.teamcode.subsystems.drive.SixWheel;
+import org.firstinspires.ftc.teamcode.subsystems.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.vision.aprilTag.AprilTagVision;
 import org.firstinspires.ftc.teamcode.util.PoseStorage;
 import org.firstinspires.ftc.teamcode.util.teleop.MatchOpMode;
@@ -51,7 +51,7 @@ public class RedWing extends MatchOpMode {
 
     @Override
     public void robotInit() {
-        drivetrain = new Drivetrain(new SixWheel(hardwareMap), telemetry);
+        drivetrain = new Drivetrain(new MecanumDrive(hardwareMap, telemetry), telemetry, hardwareMap);
         drivetrain.init();
         aprilTagVision = new AprilTagVision(hardwareMap, telemetry);
         while (!isStarted() && !isStopRequested()) {

@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class SensorColor extends SubsystemBase implements HardwareDevice {
+public class SensorColor extends SubsystemBase  {
 
     private final ColorSensor colorSensor;
     private final Telemetry telemetry;
@@ -49,10 +49,5 @@ public class SensorColor extends SubsystemBase implements HardwareDevice {
         return (colorSensor.red() > 500);
     }
 
-    @Override
     public void disable() {colorSensor.close();}
-
-    @Override
-    public String getDeviceType() {return "Color Sensor";}
-
 }

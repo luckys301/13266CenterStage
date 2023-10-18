@@ -5,16 +5,16 @@ import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDFController;
+import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.NebulaConstants;
-import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaMotor;
 
 @Config
 public class Climber extends SubsystemBase {
     protected Telemetry telemetry;
-    protected NebulaMotor climber;
+    protected MotorEx climber;
     protected PIDFController climberController;
     protected double output = 0;
 
@@ -31,23 +31,15 @@ public class Climber extends SubsystemBase {
 
     protected static ClimbEnum climbPos;
 
-    public Climber(Telemetry tl, HardwareMap hw, boolean isEnabled) {
-        climber = new NebulaMotor(hw,
-            NebulaConstants.Climber.climberName,
-            NebulaConstants.Climber.climberType,
-            NebulaConstants.Climber.climberDirection,
-            NebulaConstants.Climber.climberIdleMode,
-            isEnabled);
+    public Climber(Telemetry tl, HardwareMap hw) {
+        climber = new MotorEx(hw,"climb");
 
-        climber.setDistancePerPulse(NebulaConstants.Climber.climberDistancePerPulse);
+        climber.setDistancePerPulse(1);
 
-        climberController = new PIDFController(NebulaConstants.Climber.climberPID.p,
-            NebulaConstants.Climber.climberPID.i,
-            NebulaConstants.Climber.climberPID.d,
-            NebulaConstants.Climber.climberPID.f,
+        climberController = new PIDFController(0,0,0,0,
             getEncoderDistance(),
             getEncoderDistance());
-        climberController.setTolerance(NebulaConstants.Climber.climberTolerance);
+        climberController.setTolerance(1);
 
         this.telemetry = tl;
         climbPos = ClimbEnum.REST;
@@ -60,23 +52,23 @@ public class Climber extends SubsystemBase {
         setPower(output);//TODO: Probably shouldn't be like this
 
         telemetry.addData("Slide Motor Output:", output);
-        telemetry.addData("Climber Encoder: ", climber.getPosition());
+        telemetry.addData("Climber Encoder: ", climber.getCurrentPosition());
         telemetry.addData("Slide Pos:", getSetPoint());
     }
 
     public double getEncoderDistance() {
 //        return slideM1.getDistance();
-        return climber.getPosition();
+        return climber.getCurrentPosition();
         //TODO:Does this work?
     }
 
 
     public void setPower(double power) {
-        climber.setPower(power);
+        climber.set(power);
     }
 
     public void stopSlide() {
-        climber.stop();
+        climber.stopMotor();
         climberController.setSetPoint(getEncoderDistance());
     }
     /****************************************************************************************/

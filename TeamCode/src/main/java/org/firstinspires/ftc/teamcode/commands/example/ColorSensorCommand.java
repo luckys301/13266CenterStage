@@ -7,7 +7,7 @@ import com.arcrobotics.ftclib.command.WaitUntilCommand;
 
 import org.firstinspires.ftc.teamcode.commands.drive.trajectory.DriveForwardCommand;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drivetrain;
-import org.firstinspires.ftc.teamcode.subsystems.old.SensorColor;
+import org.firstinspires.ftc.teamcode.subsystems.sensor.SensorColor;
 
 public class ColorSensorCommand extends SequentialCommandGroup{
     public ColorSensorCommand(Drivetrain drive, SensorColor sensorColor){

@@ -5,11 +5,11 @@ import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.arcrobotics.ftclib.hardware.ServoEx;
+import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.util.NebulaConstants;
-import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaServo;
 
 @Config
 public class Shooter extends SubsystemBase
@@ -24,15 +24,10 @@ public class Shooter extends SubsystemBase
         }
     }
     Telemetry telemetry;
-    private final NebulaServo shooter;
+    private final ServoEx shooter;
 
-    public Shooter(Telemetry tl, HardwareMap hw, boolean isEnabled) {
-        shooter = new NebulaServo(hw,
-                NebulaConstants.Shooter.shooterSName,
-                NebulaConstants.Shooter.shooterDirection,
-                NebulaConstants.Shooter.minAngle,
-                NebulaConstants.Shooter.maxAngle,
-                isEnabled);
+    public Shooter(Telemetry tl, HardwareMap hw) {
+        shooter = new SimpleServo(hw, "shoot", 0, 360);
         shooter.setPosition(ShooterPos.READY.shooterPos);
 
         this.telemetry = tl;

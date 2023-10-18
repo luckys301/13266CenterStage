@@ -18,7 +18,6 @@ import org.firstinspires.ftc.ftccommon.external.WebHandlerRegistrar;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.teamcode.subsystems.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drivetrain;
-import org.firstinspires.ftc.teamcode.subsystems.drive.SixWheel;
 import org.firstinspires.ftc.teamcode.util.odoPod.StandardTrackingWheelLocalizer;
 
 import java.io.File;
@@ -66,6 +65,7 @@ public final class LogFiles {
         public double maxAngVel = DriveConstants.MAX_ANG_VEL;
         public double maxAngAccel = DriveConstants.MAX_ANG_ACCEL;
 
+        //TODO::
 //        public double mecTransP = MecDrive.TRANSLATIONAL_PID.kP;
 //        public double mecTransI = MecDrive.TRANSLATIONAL_PID.kI;
 //        public double mecTransD = MecDrive.TRANSLATIONAL_PID.kD;
@@ -73,7 +73,7 @@ public final class LogFiles {
 //        public double mecHeadingI = MecDrive.HEADING_PID.kI;
 //        public double mecHeadingD = MecDrive.HEADING_PID.kD;
 //        public double mecLateralMultiplier = MecDrive.LATERAL_MULTIPLIER;
-
+//
 //        public double tankAxialP = Drivetrain.AXIAL_PID.kP;
 //        public double tankAxialI = SixWheel.AXIAL_PID.kI;
 //        public double tankAxialD = TankDrive.AXIAL_PID.kD;

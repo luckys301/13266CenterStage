@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.subsystems.intake.PowerIntake;
 public class AutoPickCommand extends SequentialCommandGroup  {
     public AutoPickCommand(PowerIntake intake){
         addCommands(
-            intake.setSetPointCommand(PowerIntake.IntakePower.INTAKE)
+            intake.setPowerCommand(PowerIntake.IntakePower.INTAKE)
         );
     }
 }

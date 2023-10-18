@@ -5,11 +5,11 @@ import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.arcrobotics.ftclib.hardware.ServoEx;
+import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.util.NebulaConstants;
-import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaServo;
 
 @Config
 public class Arm extends SubsystemBase
@@ -25,21 +25,11 @@ public class Arm extends SubsystemBase
         }
     }
     Telemetry telemetry;
-    private final NebulaServo armR, armL;
+    private final ServoEx armR, armL;
 
-    public Arm(Telemetry tl, HardwareMap hw, boolean isEnabled) {
-        armR = new NebulaServo(hw,
-                NebulaConstants.Arm.armRName,
-                NebulaConstants.Arm.armRDirection,
-                NebulaConstants.Arm.minAngle,
-                NebulaConstants.Arm.maxAngle,
-                isEnabled);
-        armL = new NebulaServo(hw,
-                NebulaConstants.Arm.armLName,
-                NebulaConstants.Arm.armLDirection,
-                NebulaConstants.Arm.minAngle,
-                NebulaConstants.Arm.maxAngle,
-                isEnabled);
+    public Arm(Telemetry tl, HardwareMap hw) {
+        armR = new SimpleServo(hw, "armR", 0, 360);
+        armL = new SimpleServo(hw, "armL", 0, 36);
         armSetPosition(ArmPos.TRANSFER);
 
         this.telemetry = tl;

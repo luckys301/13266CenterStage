@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Claw;
 import org.firstinspires.ftc.teamcode.subsystems.arm.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.climber.Climber;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drivetrain;
-import org.firstinspires.ftc.teamcode.subsystems.drive.SixWheel;
+import org.firstinspires.ftc.teamcode.subsystems.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.intake.PowerIntake;
 import org.firstinspires.ftc.teamcode.subsystems.shooter.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.slide.Slide;
@@ -108,15 +108,15 @@ public class RedBackstage extends MatchOpMode {
 
     @Override
     public void robotInit() {
-        drivetrain = new Drivetrain(new SixWheel(hardwareMap), telemetry);
+        drivetrain = new Drivetrain(new MecanumDrive(hardwareMap, telemetry), telemetry, hardwareMap);
         drivetrain.init();
         vision = new Vision(hardwareMap, telemetry);
-        intake = new PowerIntake(telemetry, hardwareMap, true);
-        arm = new Arm(telemetry, hardwareMap, true);
-        climber = new Climber(telemetry, hardwareMap, true);
-        claw = new Claw(telemetry, hardwareMap, true);
-        slide = new Slide(telemetry, hardwareMap, true);
-        shooter = new Shooter(telemetry, hardwareMap, true);
+        intake = new PowerIntake(telemetry, hardwareMap);
+        arm = new Arm(telemetry, hardwareMap);
+        climber = new Climber(telemetry, hardwareMap);
+        claw = new Claw(telemetry, hardwareMap);
+        slide = new Slide(telemetry, hardwareMap);
+        shooter = new Shooter(telemetry, hardwareMap);
 
         climber.setSetPointCommand(Climber.ClimbEnum.REST);
         shooter.ready();
@@ -140,7 +140,7 @@ public class RedBackstage extends MatchOpMode {
                         RedBackstageConstants.Path.DropSpikeMark.preload),
                 new TrajectorySequenceContainerFollowCommand(drivetrain,
                     RedBackstageConstants.Path.DropSpikeMark.getTurn(position)),
-                intake.setSetPointCommand(PowerIntake.IntakePower.OUTTAKE_YELLOW),
+                intake.setPowerCommand(PowerIntake.IntakePower.OUTTAKE_YELLOW),
 
                 /* PurplePixel/Drop */
                 new SequentialCommandGroup(//Y is this not working...

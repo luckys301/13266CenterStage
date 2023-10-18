@@ -5,11 +5,11 @@ import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.arcrobotics.ftclib.hardware.ServoEx;
+import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.util.NebulaConstants;
-import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaServo;
 
 @Config
 public class Claw extends SubsystemBase
@@ -27,15 +27,10 @@ public class Claw extends SubsystemBase
     }
 
     Telemetry telemetry;
-    private final NebulaServo claw;     //Claw
+    private final SimpleServo claw;     //Claw
 
-    public Claw(Telemetry tl, HardwareMap hw, boolean isEnabled) {
-        claw = new NebulaServo(hw,
-            NebulaConstants.Claw.clawName,
-            NebulaConstants.Claw.clawDirection,
-            NebulaConstants.Claw.minAngle,
-            NebulaConstants.Claw.maxAngle,
-            isEnabled);
+    public Claw(Telemetry tl, HardwareMap hw) {
+        claw = new SimpleServo(hw, "claw", 0, 360);
         setClawPos(ClawPos.CLOSE_POS);
 
         this.telemetry = tl;

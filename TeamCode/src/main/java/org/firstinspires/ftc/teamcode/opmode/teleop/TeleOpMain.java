@@ -4,10 +4,9 @@ import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.commands.drive.teleop.DefaultTankDriveCommand;
+import org.firstinspires.ftc.teamcode.commands.drive.teleop.DefaultDriveCommand;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drivetrain;
-import org.firstinspires.ftc.teamcode.subsystems.drive.SixWheel;
-import org.firstinspires.ftc.teamcode.util.CycleTracker.CycleTracker;
+import org.firstinspires.ftc.teamcode.subsystems.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.util.teleop.MatchOpMode;
 
 @Config
@@ -26,7 +25,6 @@ public class TeleOpMain extends MatchOpMode {
 //    private Arm arm;
 //    private Claw claw;
 //    private Shooter shooter;
-    private CycleTracker cycleTracker;
 
     @Override
     public void robotInit() {
@@ -34,7 +32,7 @@ public class TeleOpMain extends MatchOpMode {
         operatorGamepad = new GamepadEx(gamepad2);
 
 //        claw = new Claw(telemetry, hardwareMap, true);
-        drivetrain = new Drivetrain(new SixWheel(hardwareMap), telemetry);  //Works
+        drivetrain = new Drivetrain(new MecanumDrive(hardwareMap, telemetry), telemetry, hardwareMap);
         drivetrain.init();
 //        intake = new Intake(telemetry, hardwareMap, true);
 //        arm = new Arm (telemetry, hardwareMap, true);
@@ -48,7 +46,7 @@ public class TeleOpMain extends MatchOpMode {
 //        //Claw
 //        Button up = (new GamepadTrigger(driverGamepad, GamepadKeys.Trigger.LEFT_TRIGGER)
 //                .whenPressed(claw.setClawPos(Claw.ClawPos.OPEN_POS)));
-//        Button close= (new GamepadButton(driverGamepad,  Button.DPAD_DOWN)
+//        Button close = (new GamepadButton(driverGamepad,  Button.DPAD_DOWN)
 //                .whenPressed(claw.setClawPos(Claw.ClawPos.CLOSE_POS)));
 //
 //        //Arm
@@ -91,7 +89,7 @@ public class TeleOpMain extends MatchOpMode {
          *  DRIVER
          */
 
-        drivetrain.setDefaultCommand(new DefaultTankDriveCommand(drivetrain, driverGamepad));
+        drivetrain.setDefaultCommand(new DefaultDriveCommand(drivetrain, driverGamepad, true));
 
 ////        Button recenterIMU = (new GamepadButton(driverGamepad, GamepadKeys.Button.A))
 ////                .whenPressed(new InstantCommand(drivetrain::reInitializeIMU));
