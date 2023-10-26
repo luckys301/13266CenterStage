@@ -1,10 +1,18 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.button.Button;
+import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.commands.arm.slide.SlideMoveManual;
 import org.firstinspires.ftc.teamcode.commands.drive.teleop.DefaultDriveCommand;
+import org.firstinspires.ftc.teamcode.commands.drive.teleop.SlowDriveCommand;
+import org.firstinspires.ftc.teamcode.subsystems.arm.Arm;
+import org.firstinspires.ftc.teamcode.subsystems.arm.MotorArm;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.util.teleop.MatchOpMode;
@@ -22,7 +30,7 @@ public class TeleOpMain extends MatchOpMode {
     private Drivetrain drivetrain;
 //    private Slide slide;
 //    private Intake intake;
-//    private Arm arm;
+    private MotorArm arm;
 //    private Claw claw;
 //    private Shooter shooter;
 
@@ -35,7 +43,7 @@ public class TeleOpMain extends MatchOpMode {
         drivetrain = new Drivetrain(new MecanumDrive(hardwareMap, telemetry), telemetry, hardwareMap);
         drivetrain.init();
 //        intake = new Intake(telemetry, hardwareMap, true);
-//        arm = new Arm (telemetry, hardwareMap, true);
+        arm = new MotorArm(telemetry, hardwareMap);
 //        shooter = new Shooter(telemetry, hardwareMap, true);
 //        slide = new Slide(telemetry, hardwareMap, false);
     }
@@ -50,10 +58,14 @@ public class TeleOpMain extends MatchOpMode {
 //                .whenPressed(claw.setClawPos(Claw.ClawPos.CLOSE_POS)));
 //
 //        //Arm
-//        Button armTransfer = (new GamepadButton(operatorGamepad, Button.DPAD_DOWN))
-//                .whenPressed(arm.armSetPositionCommand(Arm.ArmPos.TRANSFER));
-//        Button armOuttake = (new GamepadButton(operatorGamepad, Button.DPAD_UP))
-//                .whenPressed(arm.armSetPositionCommand(Arm.ArmPos.OUTTAKE));
+        Button armTransfer = (new GamepadButton(operatorGamepad, GamepadKeys.Button.DPAD_DOWN))
+                .whenPressed(arm.setSetPointCommand(MotorArm.ArmEnum.TRANSFER));
+        Button armOuttake = (new GamepadButton(operatorGamepad, GamepadKeys.Button.DPAD_UP))
+                .whenPressed(arm.setSetPointCommand(MotorArm.ArmEnum.LOW));
+        Button fff = (new GamepadButton(operatorGamepad, GamepadKeys.Button.DPAD_RIGHT))
+            .whenPressed(arm.setSetPointCommand(MotorArm.ArmEnum.MID));
+        Button kklk = (new GamepadButton(operatorGamepad, GamepadKeys.Button.DPAD_LEFT))
+            .whenPressed(arm.setSetPointCommand(MotorArm.ArmEnum.HIGH));
 //
 //        //Intake
 //        Trigger INTAKE = (new GamepadTrigger(driverGamepad, GamepadKeys.Trigger.LEFT_TRIGGER)
@@ -91,19 +103,16 @@ public class TeleOpMain extends MatchOpMode {
 
         drivetrain.setDefaultCommand(new DefaultDriveCommand(drivetrain, driverGamepad, true));
 
-////        Button recenterIMU = (new GamepadButton(driverGamepad, GamepadKeys.Button.A))
-////                .whenPressed(new InstantCommand(drivetrain::reInitializeIMU));
-////
-////        Button recenterIMU2 = (new GamepadButton(driverGamepad, GamepadKeys.Button.START))
-////                .whenPressed(new InstantCommand(drivetrain::reInitializeIMU));
-//
-//        Button slowMode = (new GamepadButton(driverGamepad, GamepadKeys.Button.LEFT_BUMPER))
-//                .whileHeld(new SlowDriveCommand(drivetrain, driverGamepad, true));
-//
-//        /*
-//         * OPERATOR
-//         */
-//
+        Button recenterIMU = (new GamepadButton(driverGamepad, GamepadKeys.Button.A))
+                .whenPressed(new InstantCommand(drivetrain::reInitializeIMU));
+
+        Button slowMode = (new GamepadButton(driverGamepad, GamepadKeys.Button.LEFT_BUMPER))
+                .whileHeld(new SlowDriveCommand(drivetrain, driverGamepad, true));
+
+        /*
+         * OPERATOR
+         */
+
 //        slide.setDefaultCommand(new SlideMoveManual(slide, operatorGamepad::getRightY));
 //        pivot.setDefaultCommand(new PivotMoveManual(pivot, operatorGamepad::getLeftY));
     }
